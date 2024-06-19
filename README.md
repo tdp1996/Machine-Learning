@@ -1,3 +1,3 @@
 #### MACHINE LEARNING
 
-Simulate ML Algorthims from scratch
+Simulate ML Algorithms from scratch
