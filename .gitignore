@@ -24,6 +24,7 @@ bin-release/
 .pytest_cache/
 .vscode/
 *.pyc
-house_pricing/
+*house_pricing/
 data/
 tests
+
