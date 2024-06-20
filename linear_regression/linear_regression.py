@@ -1,13 +1,35 @@
+import random
 from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from optimization.gradient_descent import gradient_descent
-# from sklearn.model_selection import train_test_split
 
 
 def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_rate: float) ->tuple[float]:
-    
-    weight, bias = gradient_descent(X_train, y_train, learning_rate)
+    """
+    Trains a linear regression model using gradient descent optimization.
+
+    Args:
+        X_train (Union[list, list[list]]): Training data. If a list, it represents single variable training data. 
+                                           If a list of lists, it represents multiple variable training data.
+        y_train (list): Target values corresponding to the training data.
+        learning_rate (float): The learning rate for gradient descent optimization.
+
+    Returns:
+        tuple: A tuple containing the final weights (list) and bias (float).
+    """
+
+    # check whether this is multiple regression or not, initialize weight, bias
+    if all(isinstance(X_i,list) for X_i in X_train):
+        numb_features = len(X_train[0])
+        initialize_weight = [random.uniform(-1,1)]*numb_features
+    else:
+        numb_features = 1
+        X_train = [[X_i] for X_i in X_train]
+        initialize_weight = [random.uniform(-1,1)]
+    initialize_bias = random.uniform(-1,1)   
+    weight, bias = gradient_descent(X_train, y_train, initialize_weight, initialize_bias, learning_rate)
 
     return weight, bias
     
@@ -42,25 +64,25 @@ if __name__ == "__main__":
     plt.grid(True)
     plt.show()
 
-#example 2
-# data = pd.read_csv('data/linear_regression_data.csv')
+    # example 2
+    data = pd.read_csv('data/linear_regression_data.csv')
 
-# # Drop the missing values
-# data = data.dropna()
+    # Drop the missing values
+    data = data.dropna()
 
-# # Chia dữ liệu thành features (X) và target (y)
-# X = data.drop('Target', axis=1)  # X là tất cả các cột ngoại trừ cột 'Target'
-# y = data['Target']  # y là cột 'Target'
+    # Split data into features (X) và target (y)
+    X = data.drop('Target', axis=1)  # X is all columns except 'Target' column
+    y = data['Target']  # y is 'Target' column
 
-# # Chia thành tập train và test
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Divide into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# # Đưa tập train thành list[features]
-# X_train = X_train.values.tolist()
-# y_train = y_train.values.tolist()
-# X_test = X_test.values.tolist()
-# y_test = y_test.values.tolist()
+    # Turn training set into list[features]
+    X_train = X_train.values.tolist()
+    y_train = y_train.values.tolist()
+    X_test = X_test.values.tolist()
+    y_test = y_test.values.tolist()
 
-# weight, bias = gradient_descent(X_train=X_train, y_train=y_train, learning_rate= 0.00001)
+    weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.00001)
 
-# y_predict = [sum(X_i[j] * weight[j] for j in range(len(X_test[0]))) + bias for X_i in X_test]
+    y_predict = [sum(X_i[j] * weight[j] for j in range(len(X_test[0]))) + bias for X_i in X_test]
