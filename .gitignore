@@ -14,7 +14,15 @@ bin-release/
 *.apk
 /__pycache__/
 
+# Ignore all __pycache__ directories
+**/__pycache__/
+
+
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# Project files
+.project
+.actionScriptProperties
+.flexProperties
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 # files
@@ -27,4 +35,5 @@ bin-release/
 *house_pricing/
 data/
 tests
+*.cpython-310
 
