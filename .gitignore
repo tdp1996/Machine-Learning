@@ -34,6 +34,6 @@ bin-release/
 *.pyc
 *house_pricing/
 data/
-tests
 *.cpython-310
 
+.DS_Store
