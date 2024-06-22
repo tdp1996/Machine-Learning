@@ -1,4 +1,4 @@
-from typing import Union
+
 def gradient_descent(X_train: list[list], y_train:list, y_predict: list) ->tuple[float,float]:
     """
     Calculates the gradients for weights and bias.
