@@ -2,13 +2,13 @@ import random
 from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 from optimization.gradient_descent import gradient_descent
 from utilities.cost_functions import mean_squared_error
 
 STOPPING_THRESHOLD = 1e-6
 
-def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_rate: float) ->tuple[list[float], float]:
+def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_rate: float, stopping_threshold: float=STOPPING_THRESHOLD) ->tuple[list[float], float]:
     """
     Trains a linear regression model using gradient descent optimization.
 
@@ -22,7 +22,6 @@ def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_ra
         Tuple[List[float], float]: A tuple containing the final weights (list of floats) and bias (float).
     """
 
-    STOPPING_THRESHOLD = 1e-6
     # Determine if this is multiple regression and initialize weights and bias
     if all(isinstance(X_i,list) for X_i in X_train):
         numb_features = len(X_train[0])
@@ -44,7 +43,7 @@ def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_ra
 
         # Calculate current cost using mean squared error
         current_cost = mean_squared_error(y_train, y_predict)
-        if abs(previous_cost - current_cost) <= STOPPING_THRESHOLD:
+        if abs(previous_cost - current_cost) <= stopping_threshold:
             break
         previous_cost = current_cost
 
