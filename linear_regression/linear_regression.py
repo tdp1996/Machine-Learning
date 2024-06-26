@@ -70,8 +70,10 @@ def predict(X_test: Union[int,float,list,list[list]], weights: list, bias: float
     # Ensure X_test is a list of lists
     if isinstance(X_test,(float,int)):
         X_test = [[X_test]]
-    elif isinstance(X_test[0],(float,int)):
+    elif isinstance(X_test[0],(float,int)) and len(weights)==1:
         X_test = [[X_i] for X_i in X_test]
+    elif isinstance(X_test[0],(float,int)):
+        X_test = [X_test]
 
     predict = [sum(X_i[j]*weights[j] for j in range(len(X_i))) + bias for X_i in X_test]
            
@@ -96,18 +98,19 @@ if __name__ == "__main__":
 
     weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
     y_predict = predict(X_test=X_test, weights=weight,bias=bias)
+    print(y_predict)
 
 
-    # # visualize results
-    # plt.figure(figsize=(14, 10))
-    # plt.scatter(X_test, y_test, color='blue', label='Actual data')
-    # plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
-    # plt.xlabel('X')
-    # plt.ylabel('y')
-    # plt.title('Linear Regression')
-    # plt.legend()
-    # plt.grid(True)
-    # plt.show()
+    # visualize results
+    plt.figure(figsize=(14, 10))
+    plt.scatter(X_test, y_test, color='blue', label='Actual data')
+    plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
+    plt.xlabel('X')
+    plt.ylabel('y')
+    plt.title('Linear Regression')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 
     # # example 2
@@ -129,6 +132,8 @@ if __name__ == "__main__":
     # X_test = X_test.values.tolist()
     # y_test = y_test.values.tolist()
 
-    # weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
+    # # weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
+    # weight = [4.403882268342521, 2.1849189386299748, 3.1137441729959665]
+    # bias = 6.291044255126585
 
     # print(predict(X_test=X_test, weights=weight,bias=bias))
