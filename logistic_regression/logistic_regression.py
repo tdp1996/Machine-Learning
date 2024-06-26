@@ -1,8 +1,10 @@
 import random
+import pandas as pd
 from typing import Union
 from optimization.gradient_descent import gradient_descent
 from utilities.activations import sigmoid
 from utilities.cost_functions import binary_cross_entrophy
+from sklearn.model_selection import train_test_split
 
 STOPPING_THRESHOLD = 1e-6
 
@@ -48,45 +50,67 @@ def LogisticRegression(X_train: Union[list,list[list]], y_train: list, learning_
         if abs(previous_cost - current_cost) <= stopping_threshold:
             break
         previous_cost = current_cost
-
-        weight_derivative, bias_derivative = gradient_descent(X_train, y_train, y_predict)
+        weights, bias = gradient_descent(X_train, y_train, y_predict, weights, bias, learning_rate)
         
-        # Update weights and bias
-        weights = [weights[j] - (learning_rate * weight_derivative[j]) for j in range(numb_features)]
-        bias -= learning_rate * bias_derivative
         iteration += 1
     print(f"Optimization finished after {iteration} iterations.")
     print(f"Final parameters: Cost: {current_cost}, Weight: {weights}, Bias: {bias}")
     
     return weights, bias
 
-def predict(x: Union[list,Union[float,int]], weight: list, bias: float) -> int:
+def predict(X_test: Union[list[list],float,int], weights: list, bias: float) -> int:
     """
     Predicts the class label based on input features using logistic regression model parameters.
 
     Args:
-    - x (Union[list, Union[float, int]]): Input features to predict. If single-variable, it should be a single value.
-      If multi-variable, it should be a list of values corresponding to each feature.
-    - weight (list): Optimized weights from logistic regression model.
+    - X_test (Union[list[list],float,int]): 
+      Input features to predict. If single-variable, it can be a single value. 
+      If multi-variable, it can be a list of values corresponding to each feature, 
+      or a list of lists for multiple samples.
+    - weights (list): Optimized weights from logistic regression model.
     - bias (float): Optimized bias term from logistic regression model.
 
     Returns:
-    - int: Predicted class label (0 or 1).
+    - list[int]: List of predicted class labels (0 or 1).
 
-    This function computes the predicted class label using the logistic regression model parameters (weights and bias).
+    This function computes the predicted class labels using the logistic regression model parameters (weights and bias).
     It applies the sigmoid function to compute the probability and then classifies based on a threshold of 0.5.
     """
-    if not isinstance(x,list):
-        x = [x]
-    z = sum(x[i] * weight[i] for i in range(len(x))) + bias
-    predict = sigmoid(z)
-    predicted_class = 1 if predict >= 0.5 else 0
-    return [predicted_class]
+    predictions = []
+    if isinstance(X_test,(float,int)):
+        X_test = [[X_test]]
+    elif isinstance(X_test[0],(float,int)) and len(weights)==1:
+        X_test = [[X_i] for X_i in X_test]
+    elif isinstance(X_test[0],(float,int)):
+        X_test = [X_test]
+
+    for X_i in X_test:
+        z = sum(X_i[j] * weights[j] for j in range(len(X_i))) + bias
+        predict_i = sigmoid(z)
+        predicted_class_i = 1 if predict_i >= 0.5 else 0
+        predictions.append(predicted_class_i)
+    return predictions
 
 
 if __name__ == "__main__":
-    X_train = [3.46, 2.44, 2.09, 0.14, 1.72, 1.65, 4.92, 4.37, 4.96, 4.52, 3.69, 5.88]
-    y_train = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
-    weights, bias = LogisticRegression(X_train=X_train, y_train=y_train, learning_rate= 0.01)
 
-    print(predict(3.46,weights,bias))
+    data = pd.read_csv('logistic_regression/binary_classification_data.csv')
+
+    # Drop the missing values
+    data = data.dropna()
+
+    # Split data into features (X) và target (y)
+    X = data.drop('Label', axis=1)  # X is all columns except 'Target' column
+    y = data['Label']  # y is 'Target' column
+
+    # Divide into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Turn training set into list[features]
+    X_train = X_train.values.tolist()
+    y_train = y_train.values.tolist()
+    X_test = X_test.values.tolist()
+    y_test = y_test.values.tolist()
+    weights, bias = LogisticRegression(X_train=X_train, y_train=y_train,learning_rate= 0.001)
+    print(predict(X_test, weights, bias))
+    
