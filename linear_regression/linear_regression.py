@@ -2,7 +2,7 @@ import random
 from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
-# from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split
 from optimization.gradient_descent import gradient_descent
 from utilities.cost_functions import mean_squared_error
 
@@ -47,58 +47,78 @@ def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_ra
             break
         previous_cost = current_cost
 
-        weight_derivative, bias_derivative = gradient_descent(X_train, y_train, y_predict)
-        
-        # Update weights and bias
-        weights = [weights[j] - (learning_rate * weight_derivative[j]) for j in range(numb_features)]
-        bias -= learning_rate * bias_derivative
+        weights, bias = gradient_descent(X_train, y_train, y_predict, weights, bias, learning_rate)   
         iteration += 1
     print(f"Optimization finished after {iteration} iterations.")
     print(f"Final parameters: Cost: {current_cost}, Weight: {weights}, Bias: {bias}")
     
     return weights, bias
-    
+
+
+def predict(X_test: Union[int,float,list,list[list]], weights: list, bias: float) ->list:
+    """
+    Predict the output based input features using linear regression model parameters
+
+    Args:
+        X_test (Union[int,float,list,list[list]]): Input features.
+        weights (list): Weights of the linear regression model.
+        bias (float): Bias of the linear regression model.
+
+    Returns:
+        list: Predicted output values.
+    """
+    # Ensure X_test is a list of lists
+    if isinstance(X_test,(float,int)):
+        X_test = [[X_test]]
+    elif isinstance(X_test[0],(float,int)):
+        X_test = [[X_i] for X_i in X_test]
+
+    predict = [sum(X_i[j]*weights[j] for j in range(len(X_i))) + bias for X_i in X_test]
+           
+    return predict
+
     
 if __name__ == "__main__":
 
     #example 1
-    data = pd.read_csv('data/data_for_lr.csv')
+    data = pd.read_csv('linear_regression/data_test/simple_linear_regression_data.csv')
 
     # Drop the missing values
     data = data.dropna()
 
     # training dataset and labels
-    X_train= list(data.x[0:550])
-    y_train = list(data.y[0:550])
+    X_train= list(data.X[0:80])
+    y_train = list(data.y[0:80])
 
     # valid dataset and labels
-    X_test = list(data.x[550:700])
-    y_test = list(data.y[550:700])
+    X_test = list(data.X[80:100])
+    y_test = list(data.y[80:100])
 
-    weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.00001)
-    y_predict = [(X_test[i]*weight[0] + bias) for i in range(len(X_test))]
+    weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
+    y_predict = predict(X_test=X_test, weights=weight,bias=bias)
 
 
-    # visualize results
-    plt.figure(figsize=(14, 10))
-    plt.scatter(X_test, y_test, color='blue', label='Actual data')
-    plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title('Linear Regression')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    # # visualize results
+    # plt.figure(figsize=(14, 10))
+    # plt.scatter(X_test, y_test, color='blue', label='Actual data')
+    # plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
+    # plt.xlabel('X')
+    # plt.ylabel('y')
+    # plt.title('Linear Regression')
+    # plt.legend()
+    # plt.grid(True)
+    # plt.show()
+
 
     # # example 2
-    # data = pd.read_csv('data/linear_regression_data.csv')
+    # data = pd.read_csv('linear_regression/data_test/multiple_linear_regression_data.csv')
 
     # # Drop the missing values
     # data = data.dropna()
 
     # # Split data into features (X) và target (y)
-    # X = data.drop('Target', axis=1)  # X is all columns except 'Target' column
-    # y = data['Target']  # y is 'Target' column
+    # X = data.drop('y', axis=1)  # X is all columns except 'Target' column
+    # y = data['y']  # y is 'Target' column
 
     # # Divide into training and test sets
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -109,6 +129,6 @@ if __name__ == "__main__":
     # X_test = X_test.values.tolist()
     # y_test = y_test.values.tolist()
 
-    # weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.00001)
+    # weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
 
-    # y_predict = [sum(X_i[j] * weight[j] for j in range(len(X_test[0]))) + bias for X_i in X_test]
+    # print(predict(X_test=X_test, weights=weight,bias=bias))
