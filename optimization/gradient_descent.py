@@ -1,5 +1,5 @@
 
-def gradient_descent(X_train: list[list], y_train:list, y_predict: list) ->tuple[float,float]:
+def gradient_descent(X_train: list[list], y_train:list, y_predict: list, weights: list, bias: float, learning_rate: float) ->tuple[list,float]:
     """
     Calculates the gradients for weights and bias.
 
@@ -22,6 +22,10 @@ def gradient_descent(X_train: list[list], y_train:list, y_predict: list) ->tuple
             weight_derivative[j] += (-2 / numb_samples) * error * X_train[i][j]
         bias_derivative += (-2 / numb_samples) * error
 
-    return weight_derivative, bias_derivative
+    # Update weights and bias
+    weights = [weights[j] - (learning_rate * weight_derivative[j]) for j in range(numb_features)]
+    bias -= learning_rate * bias_derivative
+
+    return weights, bias
 
 
