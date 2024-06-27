@@ -1,15 +1,24 @@
+from typing import Union
 
-def gradient_descent(X_train: list[list], y_train:list, y_predict: list, weights: list, bias: float, learning_rate: float) ->tuple[list,float]:
+def gradient_descent(X_train: list[list[Union[float,int]]], 
+                     y_train:list[Union[float,int]], 
+                     y_predict: list[Union[float,int]], 
+                     weights: list[Union[float,int]], 
+                     bias: Union[float,int], 
+                     learning_rate: float) ->tuple[list[float],float]:
     """
     Calculates the gradients for weights and bias.
 
     Args:
-        X_train (list[list]): Training data. Each inner list represents the features of one training example.
-        y_train (List[float]): Target values corresponding to the training data.
-        y_predict (List[float]): Predicted values corresponding to the training data.
+        X_train (list[list[Union[float,int]]]): Training data. Each inner list represents the features of one training example.
+        y_train (list[Union[float,int]]): Target values corresponding to the training data.
+        y_predict (list[Union[float,int]]): Predicted values corresponding to the training data.
+        weights (list[Union[float,int]]): initial values of weights
+        bias (Union[float,int]): initial value of bias
+        learning_rate (float): The learning rate for gradient descent optimization.
 
     Returns:
-        Tuple[List[float], float]: A tuple containing the gradients for weights (list of floats) and bias (float).
+        tuple[list[float], float]: A tuple containing the gradients for weights (list of floats) and bias (float).
     """
 
     numb_features = len(X_train[0])
