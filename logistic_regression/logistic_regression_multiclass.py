@@ -1,8 +1,10 @@
+import pandas as pd
 import random
 from typing import Union
 from optimization.gradient_descent import gradient_descent
 from utilities.activations import sigmoid
 from utilities.cost_functions import binary_cross_entrophy
+from sklearn.model_selection import train_test_split
 
 STOPPING_THRESHOLD = 1e-6
 
@@ -22,7 +24,7 @@ def get_unique_classes(y_train: list[int]) -> list[int]:
             classess.append(y_i)
     return classess
 
-def multiclass_logistic_regression(X_train: Union[list[float], list[list[float]]], y_train: list[int], learning_rate: float, stopping_threshold: float = STOPPING_THRESHOLD) -> list[tuple[list[float], float]]:
+def logistic_regression_multiclass(X_train: Union[list[float], list[list[float]]], y_train: list[int], learning_rate: float, stopping_threshold: float = STOPPING_THRESHOLD) -> list[tuple[list[float], float]]:
     """
     Train logistic regression models for multiclass classification using One-vs-Rest strategy.
 
@@ -64,11 +66,7 @@ def multiclass_logistic_regression(X_train: Union[list[float], list[list[float]]
                 break
             previous_cost = current_cost
 
-            weight_derivative, bias_derivative = gradient_descent(X_train, y_binary_i, y_predict)
-            
-            # Update weights and bias
-            weights = [weights[j] - (learning_rate * weight_derivative[j]) for j in range(numb_features)]
-            bias -= learning_rate * bias_derivative
+            weights, bias = gradient_descent(X_train, y_binary_i, y_predict, weights, bias, learning_rate)            
             iteration += 1
         print(f"Optimization finished after {iteration} iterations.")
         print(f"Final parameters: Cost: {current_cost}, Weight: {weights}, Bias: {bias}")
@@ -78,7 +76,7 @@ def multiclass_logistic_regression(X_train: Union[list[float], list[list[float]]
     return model_params
 
 
-def predict(X_test:  Union[list, list[list]], model_params: list[tuple[list, float]], classes: list[int]) -> list[int]:
+def predict(X_test:  Union[list, list[list]], model_params: list[tuple[list, float]], classess: list[int]) -> list[int]:
     """
     Predict class labels for the given test data.
 
@@ -99,12 +97,39 @@ def predict(X_test:  Union[list, list[list]], model_params: list[tuple[list, flo
         for weights, bias in model_params:
             linear_combination = sum(X_i[j] * weights[j] for j in range(len(X_i))) + bias
             class_scores.append(sigmoid(linear_combination))
-        predicted_class = classes[class_scores.index(max(class_scores))]
+        predicted_class = classess[class_scores.index(max(class_scores))]
         predictions.append(predicted_class)
     
     return predictions
 
 
-        
+if __name__ == "__main__":
+
+    data = pd.read_csv('logistic_regression/data_test/multiclass_classification_data.csv')
+
+    # Drop the missing values
+    data = data.dropna()
+
+    # Split data into features (X) và target (y)
+    X = data.drop('y', axis=1)  # X is all columns except 'Target' column
+    y = data['y']  # y is 'Target' column
+
+    # Divide into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Turn training set into list[features]
+    X_train = X_train.values.tolist()
+    y_train = y_train.values.tolist()
+    X_test = X_test.values.tolist()
+    y_test = y_test.values.tolist()
+    classess = get_unique_classes(y_test)
+
+    #train logistic regression model
+    model_params =  logistic_regression_multiclass(X_train=X_train, y_train=y_train,learning_rate= 0.001)
+    # predict
+    y_predict = predict(X_test=X_test, model_params=model_params, classess=classess)
+    
+    
+       
 
     
