@@ -8,12 +8,43 @@ from utilities.cost_functions import mean_squared_error
 
 STOPPING_THRESHOLD = 1e-6
 
-def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_rate: float, stopping_threshold: float=STOPPING_THRESHOLD) ->tuple[list[float], float]:
+def LinearRegression_model(X: Union[int,float,list,list[list[Union[int,float]]]], 
+                           weights: list[Union[int,float]], 
+                           bias: float) ->list[int,float]:
+    """
+    Predict the output based input features using linear regression model parameters
+
+    Args:
+        X (Union[int,float,list,list[list]]): Input features.
+        weights (list): Weights of the linear regression model.
+        bias (float): Bias of the linear regression model.
+
+    Returns:
+        list[int,float]: Predicted output values.
+    """
+    # Ensure X is a list of lists
+    if isinstance(X,(float,int)):
+        X = [[X]]
+    elif isinstance(X[0],(float,int)) and len(weights)==1:
+        X = [[X_i] for X_i in X]
+    elif isinstance(X[0],(float,int)):
+        X = [X]
+
+    predict = [sum(X_i[j]*weights[j] for j in range(len(X_i))) + bias for X_i in X]
+           
+    return predict
+
+
+
+def train_LinearRegression(X_train: Union[list[Union[float,int]],list[list[Union[float,int]]]], 
+                     y_train: list[Union[float,int]], 
+                     learning_rate: float, 
+                     stopping_threshold: float=STOPPING_THRESHOLD) ->tuple[list[float], float]:
     """
     Trains a linear regression model using gradient descent optimization.
 
     Args:
-        X_train (Union[list,list[list]]): Training data. If a list, it represents single variable training data. 
+        X_train (Union[list[Union[float,int]],list[list[Union[float,int]]]]): Training data. If a list, it represents single variable training data. 
                                                          If a list of lists, it represents multiple variable training data.
         y_train (List): Target values corresponding to the training data.
         learning_rate (float): The learning rate for gradient descent optimization.
@@ -54,31 +85,6 @@ def LinearRegression(X_train: Union[list,list[list]], y_train: list, learning_ra
     
     return weights, bias
 
-
-def predict(X_test: Union[int,float,list,list[list]], weights: list, bias: float) ->list:
-    """
-    Predict the output based input features using linear regression model parameters
-
-    Args:
-        X_test (Union[int,float,list,list[list]]): Input features.
-        weights (list): Weights of the linear regression model.
-        bias (float): Bias of the linear regression model.
-
-    Returns:
-        list: Predicted output values.
-    """
-    # Ensure X_test is a list of lists
-    if isinstance(X_test,(float,int)):
-        X_test = [[X_test]]
-    elif isinstance(X_test[0],(float,int)) and len(weights)==1:
-        X_test = [[X_i] for X_i in X_test]
-    elif isinstance(X_test[0],(float,int)):
-        X_test = [X_test]
-
-    predict = [sum(X_i[j]*weights[j] for j in range(len(X_i))) + bias for X_i in X_test]
-           
-    return predict
-
     
 if __name__ == "__main__":
 
@@ -96,8 +102,8 @@ if __name__ == "__main__":
     X_test = list(data.X[80:100])
     y_test = list(data.y[80:100])
 
-    weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
-    y_predict = predict(X_test=X_test, weights=weight,bias=bias)
+    weight, bias = train_LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
+    y_predict = LinearRegression_model(X=X_test, weights=weight,bias=bias)
     print(y_predict)
 
 
@@ -133,7 +139,4 @@ if __name__ == "__main__":
     # y_test = y_test.values.tolist()
 
     # # weight, bias = LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
-    # weight = [4.403882268342521, 2.1849189386299748, 3.1137441729959665]
-    # bias = 6.291044255126585
-
     # print(predict(X_test=X_test, weights=weight,bias=bias))
