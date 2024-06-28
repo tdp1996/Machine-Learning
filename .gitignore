@@ -35,5 +35,5 @@ bin-release/
 *house_pricing/
 data/
 *.cpython-310
-
+logistic_regression/logistic_regression_multiclass
 .DS_Store

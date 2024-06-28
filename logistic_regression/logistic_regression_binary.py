@@ -4,7 +4,7 @@ from typing import Union
 from optimization.gradient_descent import gradient_descent
 from utilities.activations import sigmoid
 from utilities.cost_functions import binary_cross_entrophy
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 
 STOPPING_THRESHOLD = 1e-6
 
@@ -59,6 +59,7 @@ def train_LogisticRegression_binary(X_train: Union[list[Union[float,int]],list[l
       If multi-variable, it should be a list of lists where each sublist represents a feature vector.
     - y_train (list[Union[float,int]]): Training data labels.
     - learning_rate (float): Learning rate for gradient descent, determines step size for each iteration.
+    - iterations (int): Number of iterations for gradient descent.
     - stopping_threshold (float, optional): Threshold for stopping criteria based on change in cost function. Default is 1e-6.
 
     Returns:
@@ -103,25 +104,25 @@ def train_LogisticRegression_binary(X_train: Union[list[Union[float,int]],list[l
     
     return weights, bias
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    data = pd.read_csv('logistic_regression/data_test/binary_classification_data.csv')
+#     data = pd.read_csv('logistic_regression/data_test/binary_classification_data.csv')
 
-    # Drop the missing values
-    data = data.dropna()
+#     # Drop the missing values
+#     data = data.dropna()
 
-    # Split data into features (X) và target (y)
-    X = data.drop('Label', axis=1)  # X is all columns except 'Target' column
-    y = data['Label']  # y is 'Target' column
+#     # Split data into features (X) và target (y)
+#     X = data.drop('Label', axis=1)  # X is all columns except 'Target' column
+#     y = data['Label']  # y is 'Target' column
 
-    # Divide into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+#     # Divide into training and test sets
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Turn training set into list[features]
-    X_train = X_train.values.tolist()
-    y_train = y_train.values.tolist()
-    X_test = X_test.values.tolist()
-    y_test = y_test.values.tolist()
-    weights, bias = train_LogisticRegression(X_train=X_train, y_train=y_train,learning_rate= 0.001, iterations= 10000)
-    print(LogisticRegression_model(X_test, weights, bias))
+#     # Turn training set into list[features]
+#     X_train = X_train.values.tolist()
+#     y_train = y_train.values.tolist()
+#     X_test = X_test.values.tolist()
+#     y_test = y_test.values.tolist()
+#     weights, bias = train_LogisticRegression(X_train=X_train, y_train=y_train,learning_rate= 0.001, iterations= 10000)
+#     print(LogisticRegression_model(X_test, weights, bias))
     
