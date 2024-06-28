@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 
 STOPPING_THRESHOLD = 1e-6
 
-def LogisticRegression_model(X: Union[float,int,list[list[Union[float,int]]]],
+def LogisticRegression_binary_model(X: Union[float,int,list[list[Union[float,int]]]],
                              weights: list[float], 
                              bias: float) -> int:
     """
@@ -46,7 +46,7 @@ def LogisticRegression_model(X: Union[float,int,list[list[Union[float,int]]]],
     return predictions
 
 
-def train_LogisticRegression(X_train: Union[list[Union[float,int]],list[list[Union[float,int]]]], 
+def train_LogisticRegression_binary(X_train: Union[list[Union[float,int]],list[list[Union[float,int]]]], 
                              y_train: list[Union[float,int]], 
                              learning_rate: float,
                              iterations: int, 
