@@ -3,8 +3,9 @@ from linear_regression.main import train_LinearRegression, LinearRegression_mode
 def test_LinearRegression():
     X_train = [[1,2,3,4],[5,4,7,8]]
     y_train = [11 ,13]
+    iterations = 100
     learning_rate = 0.001
-    output = train_LinearRegression(X_train=X_train, y_train=y_train, learning_rate=learning_rate)
+    output = train_LinearRegression(X_train=X_train, y_train=y_train, learning_rate=learning_rate, iterations=iterations)
 
     assert isinstance(output,tuple)
     assert len(output[0]) == 4

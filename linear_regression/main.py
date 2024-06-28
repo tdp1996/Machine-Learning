@@ -38,19 +38,22 @@ def LinearRegression_model(X: Union[int,float,list,list[list[Union[int,float]]]]
 
 def train_LinearRegression(X_train: Union[list[Union[float,int]],list[list[Union[float,int]]]], 
                      y_train: list[Union[float,int]], 
-                     learning_rate: float, 
+                     learning_rate: float,
+                     iterations: int, 
                      stopping_threshold: float=STOPPING_THRESHOLD) ->tuple[list[float], float]:
     """
     Trains a linear regression model using gradient descent optimization.
 
     Args:
-        X_train (Union[list[Union[float,int]],list[list[Union[float,int]]]]): Training data. If a list, it represents single variable training data. 
+        - X_train (Union[list[Union[float,int]],list[list[Union[float,int]]]]): Training data. If a list, it represents single variable training data. 
                                                          If a list of lists, it represents multiple variable training data.
-        y_train (List): Target values corresponding to the training data.
-        learning_rate (float): The learning rate for gradient descent optimization.
-
+        - y_train (List): Target values corresponding to the training data.
+        - learning_rate (float): The learning rate for gradient descent optimization.
+        - stopping_threshold (float, optional): Threshold for stopping criteria based on change in cost function. Default is 1e-6.
+        - iterations (int): Number of iterations for gradient descent.
+    
     Returns:
-        Tuple[List[float], float]: A tuple containing the final weights (list of floats) and bias (float).
+        tuple[list[float], float]: A tuple containing the final weights (list of floats) and bias (float).
     """
 
     # Determine if this is multiple regression and initialize weights and bias
@@ -64,8 +67,7 @@ def train_LinearRegression(X_train: Union[list[Union[float,int]],list[list[Union
     bias = random.uniform(-1,1)
     previous_cost = float('inf')
     iteration = 0
-
-    while True:
+    while iteration < iterations:
         # Predicting y values
         y_predict = []
         for X_i in X_train:
@@ -78,45 +80,46 @@ def train_LinearRegression(X_train: Union[list[Union[float,int]],list[list[Union
             break
         previous_cost = current_cost
 
+        if iteration % 1000 == 0:
+            print(f"Model parameters after {iteration} iterations: Cost: {current_cost}, Weight: {weights}, Bias: {bias}")
+
         weights, bias = gradient_descent(X_train, y_train, y_predict, weights, bias, learning_rate)   
-        iteration += 1
-    print(f"Optimization finished after {iteration} iterations.")
-    print(f"Final parameters: Cost: {current_cost}, Weight: {weights}, Bias: {bias}")
+        iteration +=1
     
     return weights, bias
 
     
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    #example 1
-    data = pd.read_csv('linear_regression/data_test/simple_linear_regression_data.csv')
+#     # example 1
+#     data = pd.read_csv('linear_regression/data_test/simple_linear_regression_data.csv')
 
-    # Drop the missing values
-    data = data.dropna()
+#     # Drop the missing values
+#     data = data.dropna()
 
-    # training dataset and labels
-    X_train= list(data.X[0:80])
-    y_train = list(data.y[0:80])
+#     # training dataset and labels
+#     X_train= list(data.X[0:80])
+#     y_train = list(data.y[0:80])
 
-    # valid dataset and labels
-    X_test = list(data.X[80:100])
-    y_test = list(data.y[80:100])
+#     # valid dataset and labels
+#     X_test = list(data.X[80:100])
+#     y_test = list(data.y[80:100])
 
-    weight, bias = train_LinearRegression(X_train=X_train, y_train=y_train, learning_rate= 0.001)
-    y_predict = LinearRegression_model(X=X_test, weights=weight,bias=bias)
-    print(y_predict)
+#     weight, bias = train_LinearRegression(X_train=X_train, y_train=y_train,iterations=10000, learning_rate= 0.001)
+#     y_predict = LinearRegression_model(X=X_test, weights=weight,bias=bias)
+#     print(y_predict)
 
 
-    # visualize results
-    plt.figure(figsize=(14, 10))
-    plt.scatter(X_test, y_test, color='blue', label='Actual data')
-    plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
-    plt.xlabel('X')
-    plt.ylabel('y')
-    plt.title('Linear Regression')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    # # visualize results
+    # plt.figure(figsize=(14, 10))
+    # plt.scatter(X_test, y_test, color='blue', label='Actual data')
+    # plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
+    # plt.xlabel('X')
+    # plt.ylabel('y')
+    # plt.title('Linear Regression')
+    # plt.legend()
+    # plt.grid(True)
+    # plt.show()
 
 
     # # example 2
