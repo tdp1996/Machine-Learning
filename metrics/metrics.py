@@ -1,6 +1,4 @@
-import math
 from typing import Optional, Union
-
 
 def r_square(y_true: list[Union[float, int]], 
             y_predict: list[Union[float, int]]) ->float:
@@ -46,7 +44,7 @@ def precision(y_true: list[Union[float, int]],
     Returns:
         float: Calculated precision.
     """
-    precision_scores = {}
+    precision_scores_dict = {}
     if average not in (None, "macro", "micro"):
         raise ValueError("Average must be one of None, 'macro', or 'micro'")
     
@@ -62,11 +60,17 @@ def precision(y_true: list[Union[float, int]],
             precision_c = f'precision_{c}'
             TP = sum((1 for yt,yp in zip(y_true, y_predict) if c==yt and c==yp))
             FP = sum((1 for yt,yp in zip(y_true, y_predict) if c!=yt and c==yp))
-            precision_scores[precision_c] = TP/(TP+FP) if (TP+FP) > 0 else 0
-                                                    
-        if average == "macro":
-            # Macro-averaged precision
-            precision_score = sum(precision_scores.values())/len(classess)
+            precision_scores_dict[precision_c] = TP/(TP+FP) if (TP+FP) > 0 else 0
+
+        # Macro-averaged precision                                           
+        if average == "macro":          
+            precision_score = sum(precision_scores_dict.values())/len(classess)
+        
+        # Micro-averaged precision
+        elif average == "micro":   
+            TP = sum((1 for yt,yp in zip(y_true, y_predict) if yt==yp))
+            FP = sum((1 for yt,yp in zip(y_true, y_predict) if yt!=yp))
+            precision_score = TP/(TP+FP) if (TP+FP) > 0 else 0
   
     return precision_score
 

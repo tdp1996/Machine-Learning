@@ -34,15 +34,21 @@ def test_accuracy():
 
 def test_precision():
     y_true = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2]
-    y_predict = [0, 0, 1, 1, 1, 2, 0, 1, 2, 2]
-    score = precision(y_true=y_true, y_predict=y_predict, average="macro")
-    expected_output = precision_score(y_true, y_predict, average="macro")
-    y_true1 =    [1,0,1,1,0,1,0,0,1,0]
-    y_predict1 = [1,0,1,0,0,1,0,1,1,0]
-    score1 = precision(y_true=y_true1, y_predict=y_predict1)
-    expected_output1 = precision_score(y_true1, y_predict1,average='binary')
-    assert math.isclose(score,expected_output)
-    assert math.isclose(score1,expected_output1)
+    y_predict = [0, 0, 1, 1, 1, 2, 0, 1, 2, 1]
+    score_macro = precision(y_true=y_true, y_predict=y_predict, average="macro")
+    expected_output_macro = precision_score(y_true, y_predict, average="macro")
+
+    score_micro = precision(y_true=y_true, y_predict=y_predict, average="micro")
+    expected_output_micro = precision_score(y_true, y_predict, average="micro")
+
+    y_true_binary =  [1,0,1,1,0,1,0,0,1,0]
+    y_predict_binary = [1,0,1,0,0,1,0,1,1,0]
+    score_binary = precision(y_true=y_true_binary, y_predict=y_predict_binary)
+    expected_output_binary = precision_score(y_true_binary, y_predict_binary,average='binary')
+
+    assert math.isclose(score_macro,expected_output_macro)
+    assert math.isclose(score_micro,expected_output_micro)
+    assert math.isclose(score_binary,expected_output_binary)
 
 
 # def test_F1_Score():
