@@ -18,10 +18,16 @@ This repository contains implementations of various machine learning algorithms 
 Machine_Learning_Project/
 │
 ├── linear_regression/
-│   ├── linear_regression.py
+│   ├── data_test
+│   └── main.py
 │
 ├── logistic_regression/
-│   └── logistic_regression.py
+│   ├── data_test
+│   ├── logistic_regression_binary.py
+│   └── logistic_regression_multiclass.py
+│
+├── metrics/
+│   └── metrics.py
 │
 ├── optimization/
 │   └── gradient_descent.py
