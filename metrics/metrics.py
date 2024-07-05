@@ -1,27 +1,68 @@
 from typing import Optional, Union
 
-def r_square(y_true: list[Union[float, int]], 
+def calculate_r_square(y_true: list[Union[float, int]], 
             y_predict: list[Union[float, int]]) ->float:
+    """
+    Calculate the R-squared (coefficient of determination) score.
+
+    Args:
+        y_true (list[Union[float, int]]): Actual target values.
+        y_predict (list[Union[float, int]]): Predicted target values.
+
+    Returns:
+        float: R-squared score.
+    """
     mean_y_true = sum(y_true)/len(y_true)
     numerator = sum((y_true[i] - y_predict[i]) ** 2 for i in range(len(y_true)))
     denominator = sum((y_true[i] - mean_y_true) ** 2 for i in range(len(y_true)))
     return 1 - (numerator/denominator)
 
 
-def Mean_Squared_Error(y_true: list[Union[float, int]], 
+def calculate_mean_squared_error(y_true: list[Union[float, int]], 
                     y_predict: list[Union[float, int]]) ->float:
+    """
+    Calculate the Mean Squared Error (MSE).
+
+    Args:
+        y_true (list[Union[float, int]]): Actual target values.
+        y_predict (list[Union[float, int]]): Predicted target values.
+
+    Returns:
+        float: Mean Squared Error.
+    """
+    
     mse = sum((y_true[i] - y_predict[i])**2 for i in range(len(y_true))) / len(y_true)
     return mse
 
 
-def Mean_Absolute_Error(y_true: list[Union[float, int]], 
+def calculate_mean_absolute_error(y_true: list[Union[float, int]], 
                         y_predict: list[Union[float, int]]) ->float:
+    """
+    Calculate the Mean Absolute Error (MAE).
+
+    Args:
+        y_true (list[Union[float, int]]): Actual target values.
+        y_predict (list[Union[float, int]]): Predicted target values.
+
+    Returns:
+        float: Mean Absolute Error.
+    """
     mae = sum(abs(y_true[i] - y_predict[i]) for i in range(len(y_true))) / len(y_true)
     return mae
 
 
-def accuracy(y_true: list[Union[float, int]], 
+def calculate_accuracy_score(y_true: list[Union[float, int]], 
             y_predict: list[Union[float, int]]) ->float:
+    """
+    Calculate the accuracy score.
+
+    Args:
+        y_true (list[Union[float, int]]): Actual target values.
+        y_predict (list[Union[float, int]]): Predicted target values.
+
+    Returns:
+        float: Accuracy score.
+    """
     count = 0
     for a,b in zip(y_true,y_predict):
         if a==b:
@@ -29,7 +70,7 @@ def accuracy(y_true: list[Union[float, int]],
     return count/len(y_true)
 
 
-def Precision_score(y_true: list[Union[float, int]], 
+def calculate_precision_score(y_true: list[Union[float, int]], 
               y_predict: list[Union[float, int]], 
               average: Optional[str] = None) -> float:
     """
@@ -78,7 +119,7 @@ def Precision_score(y_true: list[Union[float, int]],
     return precision_score
 
 
-def Recall_score(y_true: list[Union[float, int]], 
+def calculate_recall_score(y_true: list[Union[float, int]], 
             y_predict: list[Union[float, int]], 
             average: Optional[str] = None) -> float:
     """
@@ -130,7 +171,7 @@ def Recall_score(y_true: list[Union[float, int]],
 
 
 
-def F1_score(y_true: list[Union[float, int]], 
+def calculate_f1_score(y_true: list[Union[float, int]], 
             y_predict: list[Union[float, int]], 
             average: Optional[str] = None) -> float:
     """
