@@ -51,11 +51,6 @@ Machine_Learning_Project/
 │   ├── mean_median_mode.py
 │   └── standard_deviation.py
 │
-├── docs/
-│   ├── linear_regression.md
-│   ├── logistic_regression.md
-│   └── optimization.md
-│
 ├── .gitignore
 ├── README.md
 ├── env.yaml
