@@ -73,21 +73,21 @@ conda activate machine_learning
 Each algorithm is implemented in its respective directory. You can run the scripts directly or import the functions and classes in your own scripts.
 ### Example
 ```
-from linear_regression.main import train_LinearRegression, LinearRegression_model
 import matplotlib.pyplot as plt
+from linear_regression.main import train_LinearRegression, LinearRegression_model
+from metrics.metrics import calculate_r_square
 
 x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
 y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
 iterations = 1000
 learning_rate=0.01
-weight, bias = train_LinearRegression(X_train=x, y_train=y, learning_rate=learning_rate, iterations=iterations)
+weights, bias = train_LinearRegression(X_train=x, y_train=y, learning_rate=learning_rate, iterations=iterations)
 
-def myfunc(x):
-  return weight[0] * x + bias
-
-mymodel = list(map(myfunc, x))
+predictions = LinearRegression_model(x,weights,bias)
+r_square = calculate_r_square(y_true=y, y_predict=predictions)
+print(r_square)
 plt.scatter(x, y)
-plt.plot(x, mymodel)
+plt.plot(x, predictions)
 plt.show()
 ```
 
