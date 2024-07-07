@@ -40,10 +40,10 @@ Machine_Learning_Project/
 |        ├── test_gradient_descent.py
 |
 |   ├── test_utilities/
-|        ├── test_activations.py
-│        ├── test_cost_functions.py
-│        ├── test_mean_median.py
-│        └── test_standard_deviation.py
+|       ├── test_activations.py
+│       ├── test_cost_functions.py
+│       ├── test_mean_median.py
+│       └── test_standard_deviation.py
 │
 ├── utilities/
 |   ├── activations.py
@@ -71,6 +71,7 @@ Each algorithm is implemented in its respective directory. You can run the scrip
 ### Example
 ```
 import matplotlib.pyplot as plt
+import pandas as pd
 from linear_regression.main import train_LinearRegression, LinearRegression_model
 from metrics.metrics import calculate_r_square
 
