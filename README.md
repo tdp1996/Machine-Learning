@@ -2,7 +2,7 @@
 
 
 
-This repository contains implementations of various machine learning algorithms and utilities. The aim of this project is to provide a clear and understandable implementation of these algorithms from scratch, focusing on the underlying principles rather than using pre-built libraries.
+This repository contains implementations of various Machine Learning algorithms and utilities. The aim of this project is to provide a clear and understandable implementation of these algorithms from scratch, focusing on the underlying principles rather than using pre-built libraries.
 
 ## Table of Contents
 - [Project Structure](#project-structure)
@@ -33,11 +33,18 @@ Machine_Learning_Project/
 │   └── gradient_descent.py
 │
 ├── tests/
-│   ├── test_cost_functions.py
-│   ├── test_mean_median.py
-│   └── test_standard_deviation.py
+│   ├── test_metrics/
+│        ├── test_metrics.py
+|   ├── test_optimization/
+|        ├── test_gradient_descent.py
+|   ├── test_utilities/
+|        ├── test_activations.py
+│        ├── test_cost_functions.py
+│        ├── test_mean_median.py
+│        └── test_standard_deviation.py
 │
 ├── utilities/
+|   ├── activations.py
 │   ├── cost_functions.py
 │   ├── mean_median_mode.py
 │   └── standard_deviation.py
@@ -66,13 +73,14 @@ conda activate machine_learning
 Each algorithm is implemented in its respective directory. You can run the scripts directly or import the functions and classes in your own scripts.
 ### Example
 ```
-from linear_regression.linear_regression import LinearRegression
+from linear_regression.main import train_LinearRegression, LinearRegression_model
 import matplotlib.pyplot as plt
 
 x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
 y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
-
-weight, bias = LinearRegression(X_train=x, y_train=y, learning_rate=0.01)
+iterations = 1000
+learning_rate=0.01
+weight, bias = train_LinearRegression(X_train=x, y_train=y, learning_rate=learning_rate, iterations=iterations)
 
 def myfunc(x):
   return weight[0] * x + bias
@@ -85,9 +93,10 @@ plt.show()
 
 ## Implemented Algorithms
 * Linear Regression:
-  * `linear_regression.py`
+  * `main.py`
 * Logistic Regression:
-  *  `logistic_regression.py`
+  *  `logistic_regression_binary.py`
+  *  `logistic_regression_multiclass.py`
 * Optimization Algorithms:
   * `gradient_descent.py`
 
