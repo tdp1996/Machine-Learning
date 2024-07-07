@@ -35,8 +35,10 @@ Machine_Learning_Project/
 ├── tests/
 │   ├── test_metrics/
 │        ├── test_metrics.py
+|
 |   ├── test_optimization/
 |        ├── test_gradient_descent.py
+|
 |   ├── test_utilities/
 |        ├── test_activations.py
 │        ├── test_cost_functions.py
