@@ -77,17 +77,38 @@ import matplotlib.pyplot as plt
 from linear_regression.main import train_LinearRegression, LinearRegression_model
 from metrics.metrics import calculate_r_square
 
-x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
-y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
-iterations = 1000
-learning_rate=0.01
-weights, bias = train_LinearRegression(X_train=x, y_train=y, learning_rate=learning_rate, iterations=iterations)
+data = pd.read_csv('linear_regression/data_test/simple_linear_regression_data.csv')
 
-predictions = LinearRegression_model(x,weights,bias)
-r_square = calculate_r_square(y_true=y, y_predict=predictions)
+# Drop the missing values
+data = data.dropna()
+
+# training dataset and labels
+X_train= list(data.X[0:80])
+y_train = list(data.y[0:80])
+
+# valid dataset and labels
+X_test = list(data.X[80:100])
+y_test = list(data.y[80:100])
+
+# train model
+weight, bias = train_LinearRegression(X_train=X_train, y_train=y_train,iterations=10000, learning_rate= 0.001)
+
+# predict results and evaluate the performance of the model using R square metric
+y_predict = LinearRegression_model(X=X_test, weights=weight,bias=bias)
+r_square = calculate_r_square(y_true=y_test, y_predict=y_predict)
+print(y_predict)
 print(r_square)
-plt.scatter(x, y)
-plt.plot(x, predictions)
+
+
+# visualize results
+plt.figure(figsize=(14, 10))
+plt.scatter(X_test, y_test, color='blue', label='Actual data')
+plt.plot(X_test, y_predict, color='red', linewidth=2, label='Regression line')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title('Linear Regression')
+plt.legend()
+plt.grid(True)
 plt.show()
 ```
 
