@@ -183,9 +183,9 @@ def calculate_f1_score(y_true: list[Union[float, int]],
         average (Optional[str]): Type of averaging performed on the data. 
                                  "macro", "micro" or None (default is None).
 
-#     Returns:
-#         float: Calculated F1 score.
-#     """
+     Returns:
+         float: Calculated F1 score.
+    """
 
     
     if average not in (None, "macro", "micro"):

@@ -40,6 +40,8 @@ def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None)
         
     return mean
 
+
+
 def calculate_median(data: list[list[Union[int,float]]], axis: Optional[int]=None)  -> list[Union[float,int]]:
     """
     Calculate the median value(s) from a nested list of numerical data.
@@ -89,31 +91,3 @@ def calculate_median(data: list[list[Union[int,float]]], axis: Optional[int]=Non
     median = compute(sorted_data,length)
     return median
 
-def calculate_mode(data: list[list[Union[int,float]]]):
-    """
-    The Mode value is the value that appears the most number of times
-    """
-    frequency_dict = {}
-    for item in data:
-        if item in frequency_dict:
-            frequency_dict[item]+=1
-        else:
-            frequency_dict[item]=1
-    max_count = 0
-    mode = None
-    for key, value in frequency_dict.items():
-        if value > max_count:
-            max_count = value
-            mode = key
-    modes = [key for key, count in frequency_dict.items() if count == max_count]
-
-    if len(modes) > 1:
-        return modes
-    else:
-        return mode
-
-
-if __name__ == "__main__":
-    data = [[99,86,87,88,111,86],[103,87,94,78,77,85]]
-    mean = calculate_mean(data,axis=0)
-    print(mean)
