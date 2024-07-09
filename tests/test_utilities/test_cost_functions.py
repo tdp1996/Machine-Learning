@@ -1,6 +1,6 @@
 import math
 import sklearn.metrics 
-from utilities.cost_functions import mean_squared_error, binary_cross_entrophy
+from homemade.utilities.cost_functions import mean_squared_error, binary_cross_entrophy
 
 def test_mean_squared_error():
     y_true = [3, -0.5, 2, 7, 4.2]

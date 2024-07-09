@@ -1,6 +1,6 @@
 import math
 from typing import Union
-from utilities.mean_median_mode import calculate_mean
+from ..utilities.mean_median import calculate_mean
 
 def calculate_variance(data: list) -> Union[float,int]:
     """

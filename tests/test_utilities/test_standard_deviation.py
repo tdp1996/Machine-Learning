@@ -1,6 +1,6 @@
 import math
 import numpy
-from utilities.standard_deviation import calculate_variance, calculate_standard_deviation
+from homemade.utilities.standard_deviation import calculate_variance, calculate_standard_deviation
 
 def test_calculate_variance():
     data = [32,111,138,28,59,77,97]

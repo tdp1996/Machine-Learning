@@ -1,4 +1,4 @@
-from optimization.gradient_descent import gradient_descent
+from homemade.optimization.gradient_descent import gradient_descent
 
 def test_gradient_descent():
     X_train = [[1,2,4,5],[3,4,6,7]]
