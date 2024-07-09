@@ -2,7 +2,7 @@ from typing import Union, Optional
 import itertools
 
 
-def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> list[Union[float,int]]:
+def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int,list[Union[float,int]]]:
     """
     Calculate the mean value(s) from a nested list of numerical data.
 
@@ -42,7 +42,7 @@ def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None)
 
 
 
-def calculate_median(data: list[list[Union[int,float]]], axis: Optional[int]=None)  -> list[Union[float,int]]:
+def calculate_median(data: list[list[Union[int,float]]], axis: Optional[int]=None)  -> Union[float,int,list[Union[float,int]]]:
     """
     Calculate the median value(s) from a nested list of numerical data.
 

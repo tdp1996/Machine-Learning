@@ -1,16 +1,16 @@
 import math
-import numpy
+import numpy as np
 from homemade.utilities.standard_deviation import calculate_variance, calculate_standard_deviation
 
 def test_calculate_variance():
-    data = [32,111,138,28,59,77,97]
-    variance = calculate_variance(data=data)
-    np_variance = numpy.var(data)
-    assert math.isclose(variance,np_variance)
+    data = [[99,86,87,88,111,86],[103,87,94,78,77,85]]
+    variance = calculate_variance(data=data,axis=1)
+    np_variance = np.var(data,axis=1)
+    assert np.allclose(variance,np_variance,atol=1e-8)
 
 
 def test_calculate_standard_deviation():
-    data = [32,111,138,28,59,77,97]
+    data = data = [[99,86,87,88,111,86],[103,87,94,78,77,85]]
     std = calculate_standard_deviation(data=data)
-    np_std = numpy.std(data)
-    assert math.isclose(std,np_std)
+    np_std = np.std(data)
+    assert np.allclose(std,np_std,atol=1e-8)
