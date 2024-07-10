@@ -1,5 +1,5 @@
 import numpy as np
-from homemade.utilities.mean_median import calculate_mean, calculate_median
+from homemade.analysis.mean_median import calculate_mean, calculate_median
 
 def test_calculate_mean():
     data = [[99,86,87,88,111,86,103,87,94,78,77,85]]

@@ -1,7 +1,7 @@
 import math
 from typing import Union, Optional
 import itertools
-from ..utilities.mean_median import calculate_mean
+from .mean_median import calculate_mean
 
 def calculate_variance(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int]:
     """

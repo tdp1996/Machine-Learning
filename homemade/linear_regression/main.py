@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization.gradient_descent import gradient_descent
-from utilities.cost_functions import mean_squared_error
+from homemade.cost_functions.cost_functions import mean_squared_error
 
 STOPPING_THRESHOLD = 1e-6
 

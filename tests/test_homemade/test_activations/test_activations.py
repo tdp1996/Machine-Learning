@@ -1,6 +1,6 @@
 from math import isclose
 import numpy as np
-from homemade.utilities.activations import sigmoid
+from homemade.activations.activations import sigmoid
 
 def test_activations():
     z = 0.1
