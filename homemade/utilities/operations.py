@@ -1,6 +1,6 @@
 from typing import Union
 
-def add(x1: list[list[Union[int, float]]], 
+def add_matrix(x1: list[list[Union[int, float]]], 
         x2: Union[int,float,list[Union[int,float]],list[list[Union[int, float]]]]) -> list[list[Union[int,float]]]:
     """
     Adds a scalar, vector, or matrix to another matrix.
@@ -26,7 +26,7 @@ def add(x1: list[list[Union[int, float]]],
     return result
 
     
-def subtract(x1: list[list[Union[int, float]]], 
+def subtract_matrix(x1: list[list[Union[int, float]]], 
             x2: Union[int,float,list[Union[int,float]],list[list[Union[int, float]]]]) -> list[list[Union[int,float]]]:
     """
     Subtracts a scalar, vector, or matrix to another matrix.
