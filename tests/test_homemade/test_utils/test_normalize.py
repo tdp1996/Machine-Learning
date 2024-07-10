@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from homemade.normalize_data.normalize import normalize
+from homemade.utils.normalize import normalize
 
 def test_normalize():
     data = [[1, 2, 3, 4, 5],[10, 20, 30, 40, 50]]

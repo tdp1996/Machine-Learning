@@ -1,5 +1,5 @@
 import numpy as np
-from homemade.utilities.operations import add_matrix, subtract_matrix
+from homemade.utils.operations import add_matrix, subtract_matrix, dot_matrix
 
 
 def test_add_matrix():

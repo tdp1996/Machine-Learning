@@ -1,5 +1,5 @@
 import math
-from homemade.metrics.metrics import (calculate_r_square, 
+from homemade.utils.metrics import (calculate_r_square, 
                              calculate_accuracy_score, 
                              calculate_mean_squared_error, 
                              calculate_mean_absolute_error, 

@@ -1,5 +1,5 @@
 import numpy as np
-from homemade.utilities.transpose import transpose
+from homemade.utils.transpose import transpose
 
 def test_transpose():
     a = [[1, 2, 3], 

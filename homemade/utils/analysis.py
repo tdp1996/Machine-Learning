@@ -1,7 +1,45 @@
 import math
 from typing import Union, Optional
 import itertools
-from .mean_median import calculate_mean
+
+
+def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int,list[Union[float,int]]]:
+    """
+    Calculate the mean value(s) from a nested list of numerical data.
+
+    Args:
+    - data (list[list[Union[int,float]]]: A nested list containing numerical data.
+    - axis (Optional[int]): Axis along which the mean is computed. If None (default), compute the mean of the flattened array.
+
+    Returns:
+    - Union[float, int]: The mean value(s) calculated based on the specified axis.
+
+    Notes:
+    - If axis is 0, computes the mean along rows.
+    - If axis is 1, computes the mean along columns.
+    - If axis is None or any other value, computes the mean of the flattened data.
+
+    Example:
+    >>> data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    >>> calculate_mean(data, axis=0)
+    [4.0, 5.0, 6.0]
+    >>> calculate_mean(data, axis=1)
+    [2.0, 5.0, 8.0]
+    >>> calculate_mean(data)
+    5.0
+    """
+
+    if axis==0:
+        converted_data = [[item[i] for item in data] for i in range(len(data[0]))]
+        mean = [sum(converted_data[i])/len(converted_data[i]) for i in range(len(converted_data))]
+    elif axis==1:
+        mean = [sum(data[i])/len(data[i]) for i in range(len(data))]
+    else:
+        sum_data = sum(itertools.chain.from_iterable(data))
+        len_data = len(list(itertools.chain.from_iterable(data)))
+        mean = sum_data/len_data
+        
+    return mean
 
 def calculate_variance(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int]:
     """

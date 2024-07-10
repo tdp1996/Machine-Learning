@@ -27,7 +27,7 @@ def add_matrix(x1: list[list[Union[int, float]]],
 
     
 def subtract_matrix(x1: list[list[Union[int, float]]], 
-            x2: Union[int,float,list[Union[int,float]],list[list[Union[int, float]]]]) -> list[list[Union[int,float]]]:
+                    x2: Union[int,float,list[Union[int,float]],list[list[Union[int, float]]]]) -> list[list[Union[int,float]]]:
     """
     Subtracts a scalar, vector, or matrix to another matrix.
 
@@ -50,3 +50,7 @@ def subtract_matrix(x1: list[list[Union[int, float]]],
         result = [[x1[i][j] - x2[i][j] for j in range(num_cols)] for i in range(num_rows)]
 
     return result
+
+def dot_matrix(x1: list[list[Union[int, float]]], 
+                x2: Union[int,float,list[Union[int,float]],list[list[Union[int, float]]]]) -> list[list[Union[int,float]]]:
+    pass

@@ -1,8 +1,8 @@
 """Normalize features"""
 
 from typing import Union
-from ..analysis.mean_median import calculate_mean
-from ..analysis.standard_deviation import calculate_standard_deviation
+from .analysis import calculate_mean
+from .analysis import calculate_standard_deviation
 
 def normalize(features: list[list[Union[float,int]]]):
     features_normalized = features.copy()
