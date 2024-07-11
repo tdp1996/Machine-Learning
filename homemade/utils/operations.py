@@ -11,16 +11,22 @@ def add_matrix(x1: list[list[Union[int, float]]],
 
     Return: A 2D list (matrix) where x2 is added to x1.
     """
-
+    #check if x2 is a scalar
     if isinstance(x2,(int,float)):
         result = [[item[i] + x2 for i in range(len(item))] for item in x1]
+    
+    #check if x2 is a vector
     elif isinstance(x2,list) and all(isinstance(item,(int,float)) for item in x2):
+        if len(x1[0])!= len(x2):
+            raise ValueError(f"operands could not be broadcast together with shapes {(len(x1), len(x1[0]))} {(len(x2),)}")
         result = [[(x1[i][j] + x2[j]) for j in range(len(x2))] for i in range(len(x1))]
+    
+    # Check if x2 is a matrix
     else:
         num_rows = len(x1)
         num_cols = len(x1[0])
         if len(x2) != num_rows or any(len(row)!=num_cols for row in x2):
-            raise ValueError("Two matrices must have the same dimensions") 
+            raise ValueError(f"two matrix must have the same dimesions {(num_rows, num_cols)} {(len(x2), len(x2[0]))}") 
         result = [[x1[i][j] + x2[i][j] for j in range(num_cols)] for i in range(num_rows)]
 
     return result
@@ -41,12 +47,14 @@ def subtract_matrix(x1: list[list[Union[int, float]]],
     if isinstance(x2,(int,float)):
         result = [[item[i] - x2 for i in range(len(item))] for item in x1]
     elif isinstance(x2,list) and all(isinstance(item,(int,float)) for item in x2):
+        if len(x1[0])!= len(x2):
+            raise ValueError(f"operands could not be broadcast together with shapes {(len(x1), len(x1[0]))} {(len(x2),)}")
         result = [[(x1[i][j] - x2[j]) for j in range(len(x2))] for i in range(len(x1))]
     else:
         num_rows = len(x1)
         num_cols = len(x1[0])
         if len(x2) != num_rows or any(len(row)!=num_cols for row in x2):
-            raise ValueError("Two matrices must have the same dimensions") 
+            raise ValueError(f"two matrix must have the same dimesions {(num_rows, num_cols)} {(len(x2), len(x2[0]))}") 
         result = [[x1[i][j] - x2[i][j] for j in range(num_cols)] for i in range(num_rows)]
 
     return result
@@ -73,14 +81,16 @@ def dot_matrix(x1: list[list[Union[int, float]]],
         result = [[item[i] * x2 for i in range(len(item))] for item in x1]
     
     elif all(isinstance(item,(int,float)) for item in x2):
+        if len(x1[0])!= len(x2):
+             raise ValueError(f"shapes {(len(x1), len(x1[0]))} and {(len(x2),)} not aligned")
         result = [sum(item[i]*x2[i] for i in range(len(x2))) for item in x1]
-
+            
     else:
         rows_x1 = len(x1)
         cols_x1 = len(x1[0])
         cols_x2 = len(x2[0])
         if rows_x1!=cols_x2:
-            raise ValueError("The rows of x1 and the cols of x2 must be same ")
+            raise ValueError(f"shapes {(rows_x1, cols_x1)} and {(len(x2), len(x2[0]))} not algined")
         # Initialize the result matrix with zeros
         result = [[0 for _ in range(cols_x2)] for _ in range(rows_x1)]
 

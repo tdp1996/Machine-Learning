@@ -1,4 +1,6 @@
 import numpy as np
+import pytest
+import re
 from homemade.utils.operations import add_matrix, subtract_matrix, dot_matrix
 
 
@@ -22,6 +24,24 @@ def test_add_matrix():
     expected_output3 = np.add(x1,x4)
     assert np.allclose(output3,expected_output3)
 
+def test_add_matrix_error():
+    x1 = [[1, 2, 3], 
+         [4, 5, 6]]
+    x2 = [0.5, -1]
+    x3 = [[10, 20],
+          [40, 50]]
+    with pytest.raises(
+            ValueError,
+            match=re.escape("operands could not be broadcast together with shapes (2, 3) (2,)")):
+            add_matrix(x1=x1, x2=x2)
+
+    with pytest.raises(
+        ValueError,
+        match=re.escape("two matrix must have the same dimesions (2, 3) (2, 2)")):
+        add_matrix(x1=x1, x2=x3)
+      
+      
+
 def test_subtract_matrix():
     x1 = [[1, 2, 3], 
          [4, 5, 6]]
@@ -42,6 +62,22 @@ def test_subtract_matrix():
     expected_output3 = np.subtract(x1,x4)
     assert np.allclose(output3,expected_output3)
 
+def test_subtract_matrix_error():
+    x1 = [[1, 2, 3], 
+         [4, 5, 6]]
+    x2 = [0.5, -1]
+    x3 = [[10, 20],
+          [40, 50]]
+    with pytest.raises(
+            ValueError,
+            match=re.escape("operands could not be broadcast together with shapes (2, 3) (2,)")):
+            subtract_matrix(x1=x1, x2=x2)
+
+    with pytest.raises(
+        ValueError,
+        match=re.escape("two matrix must have the same dimesions (2, 3) (2, 2)")):
+        subtract_matrix(x1=x1, x2=x3)
+
 def test_dot_matrix():
     x1 = [[1, 2, 3],
           [4, 5, 6]]
@@ -61,3 +97,18 @@ def test_dot_matrix():
     expected_output3 = np.dot(x1,x4)
     assert np.allclose(output3,expected_output3)
     
+def test_dot_matrix_error():
+    x1 = [[1, 2, 3], 
+         [4, 5, 6]]
+    x2 = [0.5, -1]
+    x3 = [[10, 20],
+          [40, 50]]
+    with pytest.raises(
+            ValueError,
+            match=re.escape("shapes (2, 3) and (2,) not aligned")):
+            dot_matrix(x1=x1, x2=x2)
+
+    with pytest.raises(
+        ValueError,
+        match=re.escape("shapes (2, 3) and (2, 2) not aligned")):
+        dot_matrix(x1=x1, x2=x3)
