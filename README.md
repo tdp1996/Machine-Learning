@@ -17,39 +17,43 @@ This repository contains implementations of various Machine Learning algorithms 
 ```plaintext
 Machine_Learning_Project/
 │
-├── linear_regression/
-│   ├── data_test
-│   └── main.py
-│
-├── logistic_regression/
-│   ├── data_test
-│   ├── logistic_regression_binary.py
-│   └── logistic_regression_multiclass.py
-│
-├── metrics/
-│   └── metrics.py
-│
-├── optimization/
-│   └── gradient_descent.py
+├── homemade
+│   ├── data
+│   │
+│   ├── linear_regression/
+│   │   ├── data_test
+│   │   └── main.py
+│   │
+│   ├── logistic_regression/
+│   │   ├── data_test
+│   │   ├── logistic_regression_binary.py
+│   │   └── logistic_regression_multiclass.py
+│   │
+│   ├── optimization/
+│   │   └── gradient_descent.py
+│   │
+│   ├── utils/
+│   │    ├── activations.py
+│   │    ├── analysis.py
+│   │    ├── cost_functions.py
+│   │    ├── metrics.py
+│   │    ├── normalize.py
+│   │    ├── operations.py
+│   │    ├── transpose.py         
 │
 ├── tests/
-│   ├── test_metrics/
-│        ├── test_metrics.py
-|
-|   ├── test_optimization/
-|        ├── test_gradient_descent.py
-|
-|   ├── test_utilities/
-|       ├── test_activations.py
-│       ├── test_cost_functions.py
-│       ├── test_mean_median.py
-│       └── test_standard_deviation.py
-│
-├── utilities/
-|   ├── activations.py
-│   ├── cost_functions.py
-│   ├── mean_median_mode.py
-│   └── standard_deviation.py
+│   ├── test_homemade/
+│   │   ├── test_optimization/
+│   │   │   ├── test_gradient_descent.py
+│   │   │
+│   │   ├── test_utils/
+│   │   │   ├── test_activations.py
+│   │   │   ├── test_analysis.py
+│   │   │   ├── test_cost_functions.py
+│   │   │   ├── test_metrics.py
+│   │   │   ├── test_normalize.py
+│   │   │   ├── test_operations.py
+│   │   │   └── test_transpose.py
 │
 ├── .gitignore
 ├── README.md
