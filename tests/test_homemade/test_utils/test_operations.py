@@ -32,12 +32,12 @@ def test_add_matrix_error():
           [40, 50]]
     with pytest.raises(
             ValueError,
-            match=re.escape("operands could not be broadcast together with shapes (2, 3) (2,)")):
+            match=re.escape("Cannot add a vector of length 2 to a matrix with 3 columns.")):
             add_matrix(x1=x1, x2=x2)
 
     with pytest.raises(
         ValueError,
-        match=re.escape("two matrix must have the same dimesions (2, 3) (2, 2)")):
+        match=re.escape("Cannot add a matrix of shape (2, 2) to a matrix of shape (2, 3).")):
         add_matrix(x1=x1, x2=x3)
       
       
@@ -51,7 +51,7 @@ def test_subtract_matrix():
           [40, 50, 60]]
     
     output1 = subtract_matrix(x1=x1,x2=x2)
-    expected_output1 = np.subtract(x1=x1,x2=x3)
+    expected_output1 = np.subtract(x1,x2)
     assert np.allclose(output1,expected_output1)
 
     output2 = subtract_matrix(x1=x1,x2=x3)
@@ -70,12 +70,12 @@ def test_subtract_matrix_error():
           [40, 50]]
     with pytest.raises(
             ValueError,
-            match=re.escape("operands could not be broadcast together with shapes (2, 3) (2,)")):
+            match=re.escape("Cannot subtract a vector of length 2 to a matrix with 3 columns.")):
             subtract_matrix(x1=x1, x2=x2)
 
     with pytest.raises(
         ValueError,
-        match=re.escape("two matrix must have the same dimesions (2, 3) (2, 2)")):
+        match=re.escape("Cannot subtract a matrix of shape (2, 2) to a matrix of shape (2, 3).")):
         subtract_matrix(x1=x1, x2=x3)
 
 def test_dot_matrix():
@@ -101,14 +101,14 @@ def test_dot_matrix_error():
     x1 = [[1, 2, 3], 
          [4, 5, 6]]
     x2 = [0.5, -1]
-    x3 = [[10, 20],
-          [40, 50]]
+    x3 = [[10, 20, 30],
+          [40, 50, 30]]
     with pytest.raises(
             ValueError,
-            match=re.escape("shapes (2, 3) and (2,) not aligned")):
+            match=re.escape("shapes (2, 3) and (2,) not aligned for vector multiplication.")):
             dot_matrix(x1=x1, x2=x2)
 
     with pytest.raises(
         ValueError,
-        match=re.escape("shapes (2, 3) and (2, 2) not aligned")):
+        match=re.escape("shapes (2, 3) and (2, 3) not aligned for matrix multiplication.")):
         dot_matrix(x1=x1, x2=x3)
