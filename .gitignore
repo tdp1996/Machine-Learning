@@ -33,7 +33,7 @@ bin-release/
 .vscode/
 *.pyc
 *house_pricing/
-data/
 *.cpython-310
 logistic_regression/logistic_regression_multiclass
 .DS_Store
+dummy

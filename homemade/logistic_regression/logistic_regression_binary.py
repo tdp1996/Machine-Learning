@@ -2,8 +2,8 @@ import random
 import pandas as pd
 from typing import Union
 from optimization.gradient_descent import gradient_descent
-from utilities.activations import sigmoid
-from utilities.cost_functions import binary_cross_entrophy
+from homemade.activation.activations import sigmoid
+from homemade.utils.cost_functions import binary_cross_entrophy
 # from sklearn.model_selection import train_test_split
 
 STOPPING_THRESHOLD = 1e-6
