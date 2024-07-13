@@ -44,51 +44,56 @@ def calculate_mean(data: Array, axis: Optional[int] = None) -> Array:
         
 
 
-# def calculate_variance(data: Array, axis: Optional[int]=None) -> Union[float,int]:
-#     """
-#     Calculate the variance of the data along the specified axis.
-    
-#     Variance is a measure of the spread of data points from their mean position.
+def calculate_variance(data: Array, axis: Optional[int] = None) -> Array:
+    """
+    Calculate the variance from an Array of numerical data.
 
-#     Args:
-#         - data (list[list[Union[int,float]]]: A nested list containing numerical data.
-#         - axis (Optional[int]): Axis along which the variance is computed. If None (default), compute the variance of the flattened array.
-    
-#     Returns:
-#         Union[float, int]: The variance value(s).
+    Args:
+        data (Array): An Array object containing numerical data.
+        axis (Optional[int]): Axis along which the variance is computed. 
+                              If None (default), compute the variance of the flattened array.
 
-#     Notes:
-#     - If axis is 0, computes the variance along rows.
-#     - If axis is 1, computes the variance along columns.
-#     - If axis is None or any other value, computes the variance of the flattened data.
+    Returns:
+        Array: The variance value(s) calculated based on the specified axis.
 
-#     Example:
-#     >>> data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-#     >>> calculate_variance(data, axis=0)
-#     [6.0, 6.0, 6.0]
-#     >>> calculate_variance(data, axis=1)
-#     [0.67, 0.67, 0.67]
-#     >>> calculate_variance(data)
-#     6.67
-#     """
-#     mean = calculate_mean(data,axis)
-    
-    
-#     if axis==0:
-#         flattened_data = [[item[i] for item in data] for i in range(len(data[0]))]
-#         for subdata, item in zip(flattened_data,mean):
-#             variance_i = sum((subdata[i] - item)**2 for i in range(len(subdata))) / len(subdata)
-#             variance.append(variance_i)
-#     elif axis==1:
-#         for subdata, item in zip(data,mean):
-#             variance_i = sum((subdata[i] - item)**2 for i in range(len(subdata))) / len(subdata)
-#             variance.append(variance_i)
-#     else:
-#         flattened_data = list(itertools.chain.from_iterable(data))
-#         squared_diffs = [(value - mean)**2 for value in flattened_data]
-#         variance = sum(squared_diffs) / len(squared_diffs)
+    Raises:
+        ValueError: If the shapes of the arrays are not compatible for the operation.
 
-#     return variance
+    Example:
+    >>> data = Array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    >>> calculate_variance(data, axis=0)
+    Array([6.0, 6.0, 6.0])
+    >>> calculate_variance(data, axis=1)
+    Array([0.6666666666666666, 0.6666666666666666, 0.6666666666666666])
+    >>> calculate_variance(data)
+    6.666666666666667
+    """
+    mean_data = calculate_mean(data, axis=axis)
+
+    if axis is None:
+        if len(data.shape) == 1:
+            squared_diff = Array([(x - mean_data) ** 2 for x in data.data])
+        elif len(data.shape) == 2:
+            squared_diff = Array([[(x - mean_data) ** 2 for x in row] for row in data.data])
+        total_elements = data.shape[0] if len(data.shape) == 1 else data.shape[0] * data.shape[1]
+        return squared_diff.sum() / total_elements
+
+    elif axis == 0:
+        if len(data.shape) != 2:
+            raise ValueError(f"Axis 0 is not valid for array with shape {data.shape}")
+        squared_diff = Array([[(data.data[i][j] - mean_data.data[j]) ** 2 for j in range(data.shape[1])] for i in range(data.shape[0])])
+        return squared_diff.sum(axis=0) / data.shape[0]
+
+    elif axis == 1:
+        if len(data.shape) != 2:
+            raise ValueError(f"Axis 1 is not valid for array with shape {data.shape}")
+        squared_diff = Array([[(data.data[i][j] - mean_data.data[i]) ** 2 for j in range(data.shape[1])] for i in range(data.shape[0])])
+        return squared_diff.sum(axis=1) / data.shape[1]
+
+    else:
+        raise ValueError("Invalid axis")
+
+    
 
 # def calculate_standard_deviation(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int]:
 #     """

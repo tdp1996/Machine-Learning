@@ -301,3 +301,21 @@ class Array:
         # Sum along the second axis (rows)
         elif axis == 1 and len(self.shape) == 2:
             return Array([sum(row) for row in self.data])
+    
+    def __pow__(self, power):
+        """
+        Raises each element of the array to the specified power.
+
+        Args:
+            power (float): The power to which each element is raised.
+
+        Returns:
+            Array: A new Array object with each element raised to the specified power.
+        """
+        if len(self.shape) == 1:
+            return Array([x ** power for x in self.data])
+        elif len(self.shape) == 2:
+            return Array([[x ** power for x in row] for row in self.data])
+        else:
+            raise ValueError("__pow__ method is only implemented for 1D and 2D arrays.")
+
