@@ -1,3 +1,4 @@
+import math
 from typing import Optional
 
 
@@ -293,14 +294,22 @@ class Array:
                 return sum(sum(item) for item in self.data)
         
         # Sum along the first axis (columns)
-        elif axis == 0 and len(self.shape) == 2:
-            return Array(
-                [sum(row[i] for row in self.data) for i in range(self.shape[1])]
-            )
+        elif axis == 0:
+            if len(self.shape) == 1:
+                return sum(self.data)
+            elif len(self.shape) == 2:    
+                return Array(
+                    [sum(row[i] for row in self.data) for i in range(self.shape[1])]
+                )
         
         # Sum along the second axis (rows)
-        elif axis == 1 and len(self.shape) == 2:
+        elif axis == 1:
+            if len(self.shape) != 2:
+                raise ValueError(f"Axis 1 is not valid for array with shape {self.shape}")
             return Array([sum(row) for row in self.data])
+        
+        else:
+            raise ValueError(f"Invalid axis")
     
     def __pow__(self, power):
         """
@@ -318,4 +327,18 @@ class Array:
             return Array([[x ** power for x in row] for row in self.data])
         else:
             raise ValueError("__pow__ method is only implemented for 1D and 2D arrays.")
+        
+    def sqrt(self):
+        """
+        Computes the square root of each element in the array.
+
+        Returns:
+            Array: A new Array object with the square root of each element.
+        """
+        if len(self.shape) == 1:
+            return Array([math.sqrt(x) for x in self.data])
+        elif len(self.shape) == 2:
+            return Array([[math.sqrt(x) for x in row] for row in self.data])
+        else:
+            raise ValueError("sqrt method is only implemented for 1D and 2D arrays.")
 

@@ -197,3 +197,29 @@ def test_sum_array():
     output4 = Array(a_2D).sum(axis=1)
     expected_output4 = np.sum(a_2D, axis=1)
     assert output4.tolist() == expected_output4.tolist()
+
+    output5 = Array(a_1D).sum(axis=0)
+    expected_output5 = np.sum(a_1D, axis=0)
+    assert output5 == expected_output5
+
+
+def test_sum_array_error():
+    with pytest.raises(ValueError, match=r"Axis 1 is not valid for array with shape"):
+        a_incompatible = [1, 2, 3]
+        Array(a_incompatible).sum(axis=1)
+    with pytest.raises(ValueError, match=r"Invalid axis"):
+        a_incompatible = [[1, 2, 3], [4, 5, 6]]
+        Array(a_incompatible).sum(axis=2)
+
+
+def test_pow_array():
+    a_2D = [[1, 2, 3], [4, 5, 6]]
+    a_1D = [-2, 0.5, 1.5]
+
+    output1 = Array(a_1D).__pow__(3)
+    expected_output1 = np.pow(a_1D, 3)
+    assert output1.tolist() == expected_output1.tolist()
+
+    output2 = Array(a_2D).__pow__(3)
+    expected_output2 = np.pow(a_2D, 3)
+    assert output2.tolist() == expected_output2.tolist()
