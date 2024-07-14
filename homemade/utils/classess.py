@@ -359,4 +359,25 @@ class Array:
                     if x < 0:
                         raise ValueError("Cannot compute square root of negative number")
             return Array([[math.sqrt(x) for x in row] for row in self.data])
+        
+    def log(self):
+        """
+        Computes the natural logarithm (base e) of each element in the array.
+
+        Returns:
+            Array: A new Array object with the natural logarithm of each element.
+        
+        Raises:
+            ValueError: If the array contains non-positive values.
+        """
+        if len(self.shape) == 1:
+            if any(x <= 0 for x in self.data):
+                raise ValueError("log method only supports positive values.")
+            return Array([math.log(x) for x in self.data])
+        elif len(self.shape) == 2:
+            if any(any(x <= 0 for x in row) for row in self.data):
+                raise ValueError("log method only supports positive values.")
+            return Array([[math.log(x) for x in row] for row in self.data])
+        else:
+            raise ValueError("log method is only implemented for 1D and 2D arrays.")
 

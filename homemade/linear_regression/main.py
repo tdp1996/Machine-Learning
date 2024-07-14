@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization.gradient_descent import gradient_descent
-from homemade.utils.cost_functions import mean_squared_error
+from homemade.utils.cost_functions import calculate_mean_squared_error
 
 STOPPING_THRESHOLD = 1e-6
 
@@ -75,7 +75,7 @@ def train_LinearRegression(X_train: Union[list[Union[float,int]],list[list[Union
             y_predict.append(y_predict_i)
 
         # Calculate current cost using mean squared error
-        current_cost = mean_squared_error(y_train, y_predict)
+        current_cost = calculate_mean_squared_error(y_train, y_predict)
         if abs(previous_cost - current_cost) <= stopping_threshold:
             break
         previous_cost = current_cost
