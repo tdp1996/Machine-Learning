@@ -34,10 +34,10 @@ def calculate_mean(data: Array, axis: Optional[int] = None) -> Union[Array, int,
             data.shape[0] if len(data.shape) == 1 else data.shape[0] * data.shape[1]
         )
         return total_sum / total_elements
-    
+
     elif axis == 0:
         return data.sum(axis=0) / data.shape[0]
-    
+
     elif axis == 1:
         return data.sum(axis=1) / data.shape[1]
 
@@ -126,4 +126,3 @@ def calculate_standard_deviation(
         std = math.sqrt(variance)
 
     return std
-

@@ -1,11 +1,12 @@
 import math
 import sklearn.metrics 
+from homemade.utils.classess import Array
 from homemade.utils.cost_functions import mean_squared_error, binary_cross_entrophy
 
 def test_mean_squared_error():
     y_true = [3, -0.5, 2, 7, 4.2]
     y_predict = [2.5, 0.0, 2, 8, 4.1]
-    mse = mean_squared_error(y_true=y_true, y_predict=y_predict)
+    mse = mean_squared_error(y_true=Array(y_true), y_predict=Array(y_predict))
     skl_mse = sklearn.metrics.mean_squared_error(y_true,y_predict)
     assert math.isclose(mse,skl_mse)
 

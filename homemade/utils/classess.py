@@ -79,13 +79,14 @@ class Array:
         result = list(map(list, zip(*self.data)))
         return Array(result)
 
-    def _elementwise_op(self, other, op):
+    def _elementwise_op(self, other, op, reverse_op=None):
         """
         Helper method to perform element-wise operations.
 
         Args:
             other (Array or int or float): Another Array object or a scalar.
             op (callable): A function to perform the operation.
+            reverse_op (callable, optional): A function to perform the reverse operation if the first operand is a scalar.
 
         Returns:
             Array: A new Array object with the result of the operation.
@@ -167,6 +168,9 @@ class Array:
         """
 
         return self._elementwise_op(other, lambda x, y: x + y)
+    
+    def __radd__(self, other):
+        return self._elementwise_op(other, lambda x, y: y + x)
 
     def __sub__(self, other):
         """
@@ -182,6 +186,9 @@ class Array:
             ValueError: If the shapes of the arrays are not compatible for subtraction.
         """
         return self._elementwise_op(other, lambda x, y: x - y)
+    
+    def __rsub__(self, other):
+        return self._elementwise_op(other, lambda x, y: y - x)
 
     def __mul__(self, other):
         """
@@ -194,6 +201,9 @@ class Array:
             Array: A new Array object with the result of the multiplication.
         """
         return self._elementwise_op(other, lambda x, y: x * y)
+    
+    def __rmul__(self, other):
+        return self._elementwise_op(other, lambda x, y: y * x)
 
     def __truediv__(self, other):
         """
@@ -206,6 +216,9 @@ class Array:
             Array: A new Array object with the result of the division.
         """
         return self._elementwise_op(other, lambda x, y: x / y)
+    
+    def __rtruediv__(self, other):
+        return self._elementwise_op(other, lambda x, y: y / x)
 
     def __dot__(self, other):
         """
@@ -336,9 +349,14 @@ class Array:
             Array: A new Array object with the square root of each element.
         """
         if len(self.shape) == 1:
+            for x in self.data:
+                if x < 0:
+                    raise ValueError("Cannot compute square root of negative number")
             return Array([math.sqrt(x) for x in self.data])
-        elif len(self.shape) == 2:
-            return Array([[math.sqrt(x) for x in row] for row in self.data])
         else:
-            raise ValueError("sqrt method is only implemented for 1D and 2D arrays.")
+            for row in self.data:
+                for x in row:
+                    if x < 0:
+                        raise ValueError("Cannot compute square root of negative number")
+            return Array([[math.sqrt(x) for x in row] for row in self.data])
 
