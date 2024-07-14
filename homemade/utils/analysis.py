@@ -1,18 +1,18 @@
 import math
-from typing import Union, Optional
-import itertools
+from typing import Optional, Union
+from .classess import Array
 
 
-def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int,list[Union[float,int]]]:
+def calculate_mean(data: Array, axis: Optional[int] = None) -> Union[Array, int, float]:
     """
     Calculate the mean value(s) from a nested list of numerical data.
 
     Args:
-    - data (list[list[Union[int,float]]]: A nested list containing numerical data.
+    - data (Array): An Array object containing numerical data.
     - axis (Optional[int]): Axis along which the mean is computed. If None (default), compute the mean of the flattened array.
 
     Returns:
-    - Union[float, int]: The mean value(s) calculated based on the specified axis.
+    - Array: The mean value(s) calculated based on the specified axis.
 
     Notes:
     - If axis is 0, computes the mean along rows.
@@ -20,87 +20,109 @@ def calculate_mean(data: list[list[Union[int,float]]], axis: Optional[int]=None)
     - If axis is None or any other value, computes the mean of the flattened data.
 
     Example:
-    >>> data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    >>> data = Array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     >>> calculate_mean(data, axis=0)
-    [4.0, 5.0, 6.0]
+    Array([4.0, 5.0, 6.0])
     >>> calculate_mean(data, axis=1)
-    [2.0, 5.0, 8.0]
+    Array([2.0, 5.0, 8.0])
     >>> calculate_mean(data)
     5.0
     """
+    if axis is None:
+        total_sum = data.sum()
+        total_elements = (
+            data.shape[0] if len(data.shape) == 1 else data.shape[0] * data.shape[1]
+        )
+        return total_sum / total_elements
 
-    if axis==0:
-        converted_data = [[item[i] for item in data] for i in range(len(data[0]))]
-        mean = [sum(converted_data[i])/len(converted_data[i]) for i in range(len(converted_data))]
-    elif axis==1:
-        mean = [sum(data[i])/len(data[i]) for i in range(len(data))]
-    else:
-        sum_data = sum(itertools.chain.from_iterable(data))
-        len_data = len(list(itertools.chain.from_iterable(data)))
-        mean = sum_data/len_data
-        
-    return mean
+    elif axis == 0:
+        return data.sum(axis=0) / data.shape[0]
 
-def calculate_variance(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int]:
+    elif axis == 1:
+        return data.sum(axis=1) / data.shape[1]
+
+
+def calculate_variance(
+    data: Array, axis: Optional[int] = None
+) -> Union[Array, int, float]:
     """
-    Calculate the variance of the data along the specified axis.
-    
-    Variance is a measure of the spread of data points from their mean position.
+    Calculate the variance from an Array of numerical data.
 
     Args:
-        - data (list[list[Union[int,float]]]: A nested list containing numerical data.
-        - axis (Optional[int]): Axis along which the variance is computed. If None (default), compute the variance of the flattened array.
-    
-    Returns:
-        Union[float, int]: The variance value(s).
+        data (Array): An Array object containing numerical data.
+        axis (Optional[int]): Axis along which the variance is computed.
+                              If None (default), compute the variance of the flattened array.
 
-    Notes:
-    - If axis is 0, computes the variance along rows.
-    - If axis is 1, computes the variance along columns.
-    - If axis is None or any other value, computes the variance of the flattened data.
+    Returns:
+        Array: The variance value(s) calculated based on the specified axis.
+
+    Raises:
+        ValueError: If the shapes of the arrays are not compatible for the operation.
 
     Example:
-    >>> data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    >>> data = Array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     >>> calculate_variance(data, axis=0)
-    [6.0, 6.0, 6.0]
+    Array([6.0, 6.0, 6.0])
     >>> calculate_variance(data, axis=1)
-    [0.67, 0.67, 0.67]
+    Array([0.6666666666666666, 0.6666666666666666, 0.6666666666666666])
     >>> calculate_variance(data)
-    6.67
+    6.666666666666667
     """
-    mean = calculate_mean(data,axis)
-    variance = []
-    
-    if axis==0:
-        flattened_data = [[item[i] for item in data] for i in range(len(data[0]))]
-        for subdata, item in zip(flattened_data,mean):
-            variance_i = sum((subdata[i] - item)**2 for i in range(len(subdata))) / len(subdata)
-            variance.append(variance_i)
-    elif axis==1:
-        for subdata, item in zip(data,mean):
-            variance_i = sum((subdata[i] - item)**2 for i in range(len(subdata))) / len(subdata)
-            variance.append(variance_i)
-    else:
-        flattened_data = list(itertools.chain.from_iterable(data))
-        squared_diffs = [(value - mean)**2 for value in flattened_data]
-        variance = sum(squared_diffs) / len(squared_diffs)
 
-    return variance
+    mean_data = calculate_mean(data, axis=axis)
 
-def calculate_standard_deviation(data: list[list[Union[int,float]]], axis: Optional[int]=None) -> Union[float,int]:
+    if axis == 0 or axis is None:
+        squared_diff = (data - mean_data) ** 2
+        variance = calculate_mean(squared_diff, axis=axis)
+        return variance
+
+    elif axis == 1:
+        squared_diff = Array(
+            [
+                [
+                    (data.data[i][j] - mean_data.data[i]) ** 2
+                    for j in range(data.shape[1])
+                ]
+                for i in range(data.shape[0])
+            ]
+        )
+        return squared_diff.sum(axis=1) / data.shape[1]
+
+
+def calculate_standard_deviation(
+    data: Array, axis: Optional[int] = None
+) -> Union[Array, int, float]:
     """
-    - Standard deviation is a number that describes how spread out the values are.
+    Calculate the standard deviation from an Array of numerical data.
+
+    Standard deviation is a number that describes how spread out the values are:
     - A low standard deviation means that most of the numbers are close to the mean (average) value.
     - A high standard deviation means that the values are spread out over a wider range.
+
+    Args:
+        data (Array): An Array object containing numerical data.
+        axis (Optional[int]): Axis along which the standard deviation is computed.
+                              If None (default), compute the standard deviation of the flattened array.
+
+    Returns:
+        Union[Array, int, float]: The standard deviation value(s) calculated based on the specified axis.
+                                  Returns an Array if axis is specified, otherwise returns a scalar value.
+
+    Example:
+    >>> data = Array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    >>> calculate_standard_deviation(data, axis=0)
+    Array([2.449489742783178, 2.449489742783178, 2.449489742783178])
+    >>> calculate_standard_deviation(data, axis=1)
+    Array([0.816496580927726, 0.816496580927726, 0.816496580927726])
+    >>> calculate_standard_deviation(data)
+    2.581988897471611
     """
-    variance = calculate_variance(data,axis)
-    if axis==0 or axis==1:
-        std = [math.sqrt(variance[i]) for i in range(len(variance))]
+
+    variance = calculate_variance(data, axis)
+
+    if axis == 0 or axis == 1:
+        std = variance.sqrt()
     else:
         std = math.sqrt(variance)
-    return std
 
-if __name__ == "__main__":
-    speed = [86,87,88,86,87,85,86]
-    print(calculate_standard_deviation(speed))
-    
+    return std
