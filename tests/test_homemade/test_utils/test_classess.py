@@ -350,3 +350,16 @@ def test_log_array_error():
     with pytest.raises(ValueError, match=r"log method only supports positive values."):
         a_incompatible = [[1, 2, -3], [4, 5, 6]]
         Array(a_incompatible).log()
+
+def test_abs_array():
+    a_2D = [[1, -2, 3], [4, 5, -6]]
+    a_1D = [1, -0.5, -1.5]
+
+    output1 = Array(a_1D).abs()
+    expected_output1 = np.abs(a_1D)
+    assert output1.tolist() == expected_output1.tolist()
+
+    output2 = Array(a_2D).abs()
+    expected_output2 = np.abs(a_2D)
+    assert output2.tolist() == expected_output2.tolist()
+

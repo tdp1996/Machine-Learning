@@ -380,4 +380,11 @@ class Array:
             return Array([[math.log(x) for x in row] for row in self.data])
         else:
             raise ValueError("log method is only implemented for 1D and 2D arrays.")
+        
+    def abs(self):
+        if len(self.shape) == 1:
+            return Array([x if x>=0 else -(x) for x in self.data])
+        else:
+            return Array([[x if x>=0 else -(x) for x in row] for row in self.data])
+
 

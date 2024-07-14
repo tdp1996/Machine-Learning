@@ -1,7 +1,9 @@
 from typing import Optional, Union
+from .classess import Array
+from .analysis import calculate_mean
 
-def calculate_r_square(y_true: list[Union[float, int]], 
-            y_predict: list[Union[float, int]]) ->float:
+def calculate_r_square(y_true: Array, 
+            y_predict: Array)->float:
     """
     Calculate the R-squared (coefficient of determination) score.
 
@@ -12,14 +14,14 @@ def calculate_r_square(y_true: list[Union[float, int]],
     Returns:
         float: R-squared score.
     """
-    mean_y_true = sum(y_true)/len(y_true)
-    numerator = sum((y_true[i] - y_predict[i]) ** 2 for i in range(len(y_true)))
-    denominator = sum((y_true[i] - mean_y_true) ** 2 for i in range(len(y_true)))
+    mean_y_true = calculate_mean(y_true)
+    numerator = ((y_true - y_predict) ** 2).sum()
+    denominator = ( (y_true - mean_y_true) ** 2).sum()
     return 1 - (numerator/denominator)
 
 
-def calculate_mean_squared_error(y_true: list[Union[float, int]], 
-                    y_predict: list[Union[float, int]]) ->float:
+def calculate_mean_squared_error(y_true: Array, 
+                    y_predict: Array)->float:
     """
     Calculate the Mean Squared Error (MSE).
 
@@ -31,12 +33,12 @@ def calculate_mean_squared_error(y_true: list[Union[float, int]],
         float: Mean Squared Error.
     """
     
-    mse = sum((y_true[i] - y_predict[i])**2 for i in range(len(y_true))) / len(y_true)
+    squared_error = (y_true - y_predict) ** 2
+    mse = calculate_mean(squared_error)
     return mse
 
 
-def calculate_mean_absolute_error(y_true: list[Union[float, int]], 
-                        y_predict: list[Union[float, int]]) ->float:
+def calculate_mean_absolute_error(y_true: Array, y_predict: Array) -> float:
     """
     Calculate the Mean Absolute Error (MAE).
 
@@ -47,12 +49,14 @@ def calculate_mean_absolute_error(y_true: list[Union[float, int]],
     Returns:
         float: Mean Absolute Error.
     """
-    mae = sum(abs(y_true[i] - y_predict[i]) for i in range(len(y_true))) / len(y_true)
+    absolute_error = (y_true - y_predict).abs()
+    mae = calculate_mean(absolute_error)
+
     return mae
 
 
-def calculate_accuracy_score(y_true: list[Union[float, int]], 
-            y_predict: list[Union[float, int]]) ->float:
+def calculate_accuracy_score(y_true: Array, 
+            y_predict: Array) ->float:
     """
     Calculate the accuracy score.
 
@@ -64,10 +68,10 @@ def calculate_accuracy_score(y_true: list[Union[float, int]],
         float: Accuracy score.
     """
     count = 0
-    for a,b in zip(y_true,y_predict):
-        if a==b:
-            count +=1
-    return count/len(y_true)
+    for yt,yp in zip(y_true.data,y_predict.data):
+        if yt == yp:
+            count += 1
+    return count / y_true.shape[0]
 
 
 def calculate_precision_score(y_true: list[Union[float, int]], 

@@ -1,4 +1,12 @@
 import math
+from sklearn.metrics import (r2_score, 
+                            accuracy_score,
+                            mean_squared_error, 
+                            mean_absolute_error, 
+                            precision_score,
+                            recall_score, 
+                            f1_score)
+from homemade.utils.classess import Array
 from homemade.utils.metrics import (calculate_r_square, 
                              calculate_accuracy_score, 
                              calculate_mean_squared_error, 
@@ -6,34 +14,34 @@ from homemade.utils.metrics import (calculate_r_square,
                              calculate_precision_score, 
                              calculate_recall_score, 
                              calculate_f1_score)
-from sklearn.metrics import r2_score, accuracy_score, mean_squared_error, mean_absolute_error, precision_score,recall_score, f1_score
+
 
 
 def test_calculate_r_square():
     y_true = [3,-0.5,2,7,4.2,1.5,3.3,2.8,1.2,4.6]
     y_predict = [2.5,0.0,2,8,4.0,1.7,3.5,2.6,1.4,4.8]
-    output = calculate_r_square(y_true=y_true, y_predict=y_predict)
+    output = calculate_r_square(y_true=Array(y_true), y_predict=Array(y_predict))
     expected_output = r2_score(y_true, y_predict)
     assert output == expected_output
               
 def test_calculate_mean_squared_error():
     y_true = [3,-0.5,2,7,4.2,1.5,3.3,2.8,1.2,4.6]
     y_predict = [2.5,0.0,2,8,4.0,1.7,3.5,2.6,1.4,4.8]
-    mse = calculate_mean_squared_error(y_true=y_true, y_predict=y_predict)
+    mse = calculate_mean_squared_error(y_true=Array(y_true), y_predict=Array(y_predict))
     expected_output = mean_squared_error(y_true,y_predict)
-    assert math.isclose(mse,expected_output)
+    assert mse == expected_output
 
 def test_calculate_mean_absolute_error():
     y_true = [3,-0.5,2,7,4.2,1.5,3.3,2.8,1.2,4.6]
     y_predict = [2.5,0.0,2,8,4.0,1.7,3.5,2.6,1.4,4.8]
-    mae = calculate_mean_absolute_error(y_true=y_true, y_predict=y_predict)
+    mae = calculate_mean_absolute_error(y_true=Array(y_true), y_predict=Array(y_predict))
     expected_output = mean_absolute_error(y_true, y_predict)
-    assert math.isclose(mae,expected_output)
+    assert mae == expected_output
 
 def test_calculate_accuracy_score():
     y_true = [1,0,1,1,0,1,0,0,1,0]
     y_predict = [1,0,1,0,0,1,0,1,1,0]
-    score = calculate_accuracy_score(y_true=y_true, y_predict=y_predict)
+    score = calculate_accuracy_score(y_true=Array(y_true), y_predict=Array(y_predict))
     expected_score = accuracy_score(y_true, y_predict)
     assert score == expected_score
 
@@ -41,15 +49,15 @@ def test_calculate_accuracy_score():
 def test_calculate_precision_score():
     y_true = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2]
     y_predict = [0, 0, 1, 1, 1, 2, 0, 1, 2, 1]
-    precision_score_macro = calculate_precision_score(y_true=y_true, y_predict=y_predict, average="macro")
+    precision_score_macro = calculate_precision_score(y_true=Array(y_true), y_predict=Array(y_predict), average="macro")
     expected_precision_score_macro = precision_score(y_true, y_predict, average="macro")
 
-    precision_score_micro = calculate_precision_score(y_true=y_true, y_predict=y_predict, average="micro")
+    precision_score_micro = calculate_precision_score(y_true=Array(y_true), y_predict=Array(y_predict), average="micro")
     expected_precision_score_micro = precision_score(y_true, y_predict, average="micro")
 
     y_true_binary =  [1,0,1,1,0,1,0,0,1,0]
     y_predict_binary = [1,0,1,0,0,1,0,1,1,0]
-    precision_score_binary = calculate_precision_score(y_true=y_true_binary, y_predict=y_predict_binary)
+    precision_score_binary = calculate_precision_score(y_true=Array(y_true_binary), y_predict=Array(y_predict_binary))
     expected_precision_score_binary = precision_score(y_true_binary, y_predict_binary)
 
     assert math.isclose(precision_score_macro,expected_precision_score_macro)
