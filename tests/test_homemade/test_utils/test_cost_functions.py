@@ -1,6 +1,6 @@
 import math
 from sklearn.metrics import mean_squared_error, log_loss
-from homemade.utils.classess import Array
+from homemade.utils.array import Array
 from homemade.utils.cost_functions import MeanSquaredError, BinaryCrossEntropy
 
 

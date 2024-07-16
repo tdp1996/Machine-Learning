@@ -1,6 +1,6 @@
 import math
 from typing import Optional, Union
-from .classess import Array
+from .array import Array
 
 
 def calculate_mean(data: Array, axis: Optional[int] = None) -> Union[Array, int, float]:
@@ -29,17 +29,17 @@ def calculate_mean(data: Array, axis: Optional[int] = None) -> Union[Array, int,
     5.0
     """
     if axis is None:
-        total_sum = data.sum()
+        total_sum = Array.sum(data)
         total_elements = (
             data.shape[0] if len(data.shape) == 1 else data.shape[0] * data.shape[1]
         )
         return total_sum / total_elements
 
     elif axis == 0:
-        return data.sum(axis=0) / data.shape[0]
+        return Array.sum(data, axis=0) / data.shape[0]
 
     elif axis == 1:
-        return data.sum(axis=1) / data.shape[1]
+        return Array.sum(data, axis=1) / data.shape[1]
 
 
 def calculate_variance(
@@ -86,7 +86,7 @@ def calculate_variance(
                 for i in range(data.shape[0])
             ]
         )
-        return squared_diff.sum(axis=1) / data.shape[1]
+        return Array.sum(squared_diff, axis=1) / data.shape[1]
 
 
 def calculate_standard_deviation(
@@ -121,7 +121,7 @@ def calculate_standard_deviation(
     variance = calculate_variance(data, axis)
 
     if axis == 0 or axis == 1:
-        std = variance.sqrt()
+        std = Array.sqrt(variance)
     else:
         std = math.sqrt(variance)
 

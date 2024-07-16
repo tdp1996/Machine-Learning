@@ -1,3 +1,4 @@
+import copy
 import math
 from typing import Optional
 
@@ -34,6 +35,20 @@ class Array:
             str: The string representation of the array.
         """
         return f"Array({self.data})"
+    
+    def __neg__(self):
+        """
+        Negates each element of the Array.
+
+        Returns:
+            Array: A new Array object with each element negated.
+        """
+        if len(self.shape) == 1:
+            negated_data = [-x for x in self.data]
+        else:
+            negated_data = [[-x for x in row] for row in self.data]
+        
+        return Array(negated_data)
 
     def getitem(self, index):
         """
@@ -59,6 +74,33 @@ class Array:
             Array: An Array object.
         """
         return cls(data_list)
+    
+    def copy(self):
+        """
+        Creates a deep copy of the Array object.
+
+        Returns:
+            Array: A new Array object that is a deep copy of the original.
+        """
+        return Array(copy.deepcopy(self.data))
+    
+    @staticmethod
+    def ensure_array(obj):
+        """
+        Ensures that the input is an Array instance. If the input is a list, it converts it to an Array.
+
+        Args:
+            obj (list or Array): The input object.
+
+        Returns:
+            Array: The Array instance.
+        """
+        if isinstance(obj, Array):
+            return obj
+        elif isinstance(obj, list):
+            return Array.from_list(obj)
+        else:
+            raise ValueError("Input must be a list or an Array instance")
 
     def tolist(self):
         """
@@ -282,7 +324,8 @@ class Array:
         """
         return self.__dot__(other)
 
-    def sum(self, axis: Optional[int] = None):
+    @staticmethod
+    def sum(data, axis: Optional[int] = None):
         """
         Computes the sum of array elements over a given axis.
 
@@ -298,28 +341,28 @@ class Array:
             - If axis is 1, computes the sum along columns.
             - If axis is None or any other value, computes the sum of the flattened data.
         """
-
+        data = Array.ensure_array(data)
         # Sum all elements
         if axis is None:
-            if len(self.shape) == 1: 
-                return sum(self.data)
-            elif len(self.shape) == 2:
-                return sum(sum(item) for item in self.data)
+            if len(data.shape) == 1: 
+                return sum(data.data)
+            elif len(data.shape) == 2:
+                return sum(sum(item) for item in data.data)
         
         # Sum along the first axis (columns)
         elif axis == 0:
-            if len(self.shape) == 1:
-                return sum(self.data)
-            elif len(self.shape) == 2:    
+            if len(data.shape) == 1:
+                return sum(data.data)
+            elif len(data.shape) == 2:    
                 return Array(
-                    [sum(row[i] for row in self.data) for i in range(self.shape[1])]
+                    [sum(row[i] for row in data.data) for i in range(data.shape[1])]
                 )
         
         # Sum along the second axis (rows)
         elif axis == 1:
-            if len(self.shape) != 2:
-                raise ValueError(f"Axis 1 is not valid for array with shape {self.shape}")
-            return Array([sum(row) for row in self.data])
+            if len(data.shape) != 2:
+                raise ValueError(f"Axis 1 is not valid for array with shape {data.shape}")
+            return Array([sum(row) for row in data.data])
         
         else:
             raise ValueError(f"Invalid axis")
@@ -341,26 +384,28 @@ class Array:
         else:
             raise ValueError("__pow__ method is only implemented for 1D and 2D arrays.")
         
-    def sqrt(self):
+    def sqrt(data):
         """
         Computes the square root of each element in the array.
 
         Returns:
             Array: A new Array object with the square root of each element.
         """
-        if len(self.shape) == 1:
-            for x in self.data:
+        data = Array.ensure_array(data)
+        if len(data.shape) == 1:
+            for x in data.data:
                 if x < 0:
                     raise ValueError("Cannot compute square root of negative number")
-            return Array([math.sqrt(x) for x in self.data])
+            return Array([math.sqrt(x) for x in data.data])
         else:
-            for row in self.data:
+            for row in data.data:
                 for x in row:
                     if x < 0:
                         raise ValueError("Cannot compute square root of negative number")
-            return Array([[math.sqrt(x) for x in row] for row in self.data])
-        
-    def log(self):
+            return Array([[math.sqrt(x) for x in row] for row in data.data])
+    
+    @staticmethod
+    def log(data):
         """
         Computes the natural logarithm (base e) of each element in the array.
 
@@ -370,21 +415,32 @@ class Array:
         Raises:
             ValueError: If the array contains non-positive values.
         """
-        if len(self.shape) == 1:
-            if any(x <= 0 for x in self.data):
+        data = Array.ensure_array(data)
+        if len(data.shape) == 1:
+            if any(x <= 0 for x in data.data):
                 raise ValueError("log method only supports positive values.")
-            return Array([math.log(x) for x in self.data])
-        elif len(self.shape) == 2:
-            if any(any(x <= 0 for x in row) for row in self.data):
+            return Array([math.log(x) for x in data.data])
+        elif len(data.shape) == 2:
+            if any(any(x <= 0 for x in row) for row in data.data):
                 raise ValueError("log method only supports positive values.")
-            return Array([[math.log(x) for x in row] for row in self.data])
+            return Array([[math.log(x) for x in row] for row in data.data])
         else:
             raise ValueError("log method is only implemented for 1D and 2D arrays.")
-        
-    def abs(self):
-        if len(self.shape) == 1:
-            return Array([x if x>=0 else -(x) for x in self.data])
+    
+    @staticmethod
+    def abs(data):
+        data = Array.ensure_array(data)
+        if len(data.shape) == 1:
+            return Array([x if x>=0 else -(x) for x in data.data])
         else:
-            return Array([[x if x>=0 else -(x) for x in row] for row in self.data])
+            return Array([[x if x>=0 else -(x) for x in row] for row in data.data])
+    
+    @staticmethod
+    def exp(data):
+        data = Array.ensure_array(data)
+        if len(data.shape) == 1:
+            return Array([math.exp(x) for x in data.data])
+        else:
+            return Array([[math.exp(x) for x in row] for row in data.data])        
 
 

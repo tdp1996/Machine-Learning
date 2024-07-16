@@ -1,5 +1,5 @@
 from homemade.utils.metrics import Metrics
-from homemade.utils.classess import Array
+from homemade.utils.array import Array
 from sklearn.metrics import (
     r2_score,
     accuracy_score,

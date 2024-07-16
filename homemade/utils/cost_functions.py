@@ -1,5 +1,5 @@
 from .analysis import calculate_mean
-from .classess import Array
+from .array import Array
 
 
 class MeanSquaredError:
@@ -68,8 +68,8 @@ class BinaryCrossEntropy:
             0.164252033486018
         """
         total_element = y_true.shape[0]
-        total_sum = (
-            y_true * y_predict.log() + (1 - y_true) * (1 - y_predict).log()
-        ).sum()
+        total_sum = Array.sum(
+            y_true * Array.log(y_predict) + (1 - y_true) * Array.log(1 - y_predict)
+        )
         bce = (-1 / total_element) * total_sum
         return bce
