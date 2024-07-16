@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from homemade.utils.classess import Array
+from homemade.utils.array import Array
 
 
 def test_add_Array():

@@ -1,3 +1,4 @@
+import copy
 import math
 from typing import Optional
 
@@ -73,6 +74,15 @@ class Array:
             Array: An Array object.
         """
         return cls(data_list)
+    
+    def copy(self):
+        """
+        Creates a deep copy of the Array object.
+
+        Returns:
+            Array: A new Array object that is a deep copy of the original.
+        """
+        return Array(copy.deepcopy(self.data))
     
     @staticmethod
     def ensure_array(obj):
@@ -314,6 +324,7 @@ class Array:
         """
         return self.__dot__(other)
 
+    @staticmethod
     def sum(data, axis: Optional[int] = None):
         """
         Computes the sum of array elements over a given axis.

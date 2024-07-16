@@ -1,7 +1,7 @@
 from math import isclose
 import numpy as np
 from homemade.utils.activations import sigmoid
-from homemade.utils.classess import Array
+from homemade.utils.array import Array
 
 def test_activations():
     z = [1, 2, 3]

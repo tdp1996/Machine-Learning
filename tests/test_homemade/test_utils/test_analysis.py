@@ -5,7 +5,7 @@ from homemade.utils.analysis import (
     calculate_variance,
     calculate_standard_deviation,
 )
-from homemade.utils.classess import Array
+from homemade.utils.array import Array
 
 
 def test_calculate_mean():

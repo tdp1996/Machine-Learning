@@ -1,6 +1,6 @@
 from typing import Optional
 from .analysis import calculate_mean
-from .classess import Array
+from .array import Array
 
 
 class Metrics:
@@ -36,8 +36,8 @@ class Metrics:
             float: The R^2 score.
         """
         mean_y_true = calculate_mean(y_true)
-        numerator = ((y_true - y_predict) ** 2).sum()
-        denominator = ((y_true - mean_y_true) ** 2).sum()
+        numerator = Array.sum((y_true - y_predict) ** 2)
+        denominator = Array.sum((y_true - mean_y_true) ** 2)
         return 1 - (numerator / denominator)
 
     @staticmethod
@@ -68,7 +68,7 @@ class Metrics:
         Returns:
             float: The mean absolute error.
         """
-        absolute_error = (y_true - y_predict).abs()
+        absolute_error = Array.abs(y_true - y_predict)
         mae = calculate_mean(absolute_error)
         return mae
 
