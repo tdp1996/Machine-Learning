@@ -271,33 +271,33 @@ def test_sum_array():
     a_2D = [[1, 2, 3], [4, 5, 6]]
     a_1D = [-2, 0.5, 1.5]
 
-    output1 = Array(a_1D).sum()
+    output1 = Array.sum(a_1D)
     expected_output1 = np.sum(a_1D)
     assert output1 == expected_output1
 
-    output2 = Array(a_2D).sum()
+    output2 = Array.sum(a_2D)
     expected_output2 = np.sum(a_2D)
     assert output2 == expected_output2
 
-    output3 = Array(a_2D).sum(axis=0)
+    output3 = Array.sum(a_2D, axis=0)
     expected_output3 = np.sum(a_2D, axis=0)
     assert output3.tolist() == expected_output3.tolist()
 
-    output4 = Array(a_2D).sum(axis=1)
+    output4 = Array.sum(a_2D, axis=1)
     expected_output4 = np.sum(a_2D, axis=1)
     assert output4.tolist() == expected_output4.tolist()
 
-    output5 = Array(a_1D).sum(axis=0)
+    output5 = Array.sum(a_1D, axis=0)
     expected_output5 = np.sum(a_1D, axis=0)
     assert output5 == expected_output5
 
 def test_sum_array_error():
     with pytest.raises(ValueError, match=r"Axis 1 is not valid for array with shape"):
         a_incompatible = [1, 2, 3]
-        Array(a_incompatible).sum(axis=1)
+        Array.sum(a_incompatible, axis=1)
     with pytest.raises(ValueError, match=r"Invalid axis"):
-        a_incompatible = [[1, 2, 3], [4, 5, 6]]
-        Array(a_incompatible).sum(axis=2)
+        a2D_incompatible = [[1, 2, 3], [4, 5, 6]]
+        Array.sum(a2D_incompatible, axis=2)
 
 def test_pow_array():
     a_2D = [[1, 2, 3], [4, 5, 6]]
@@ -315,51 +315,63 @@ def test_sqrt_array():
     a_2D = [[1, 2, 3], [4, 5, 6]]
     a_1D = [1, 0.5, 1.5]
 
-    output1 = Array(a_1D).sqrt()
+    output1 = Array.sqrt(a_1D)
     expected_output1 = np.sqrt(a_1D)
     assert output1.tolist() == expected_output1.tolist()
 
-    output2 = Array(a_2D).sqrt()
+    output2 = Array.sqrt(a_2D)
     expected_output2 = np.sqrt(a_2D)
     assert output2.tolist() == expected_output2.tolist()
 
 def test_sqrt_array_error():
     with pytest.raises(ValueError, match=r"Cannot compute square root of negative number"):
         a_incompatible = [1, -2, 3]
-        Array(a_incompatible).sqrt()
+        Array.sqrt(a_incompatible)
     with pytest.raises(ValueError, match=r"Cannot compute square root of negative number"):
-        a_incompatible = [[1, 2, -3], [4, 5, 6]]
-        Array(a_incompatible).sqrt()
+        a2D_incompatible = [[1, 2, -3], [4, 5, 6]]
+        Array.sqrt(a2D_incompatible)
 
 def test_log_array():
     a_2D = [[1, 2, 3], [4, 5, 6]]
     a_1D = [1, 0.5, 1.5]
 
-    output1 = Array(a_1D).log()
+    output1 = Array.log(a_1D)
     expected_output1 = np.log(a_1D)
     assert output1.tolist() == expected_output1.tolist()
 
-    output2 = Array(a_2D).log()
+    output2 = Array.log(a_2D)
     expected_output2 = np.log(a_2D)
     assert output2.tolist() == expected_output2.tolist()
 
 def test_log_array_error():
     with pytest.raises(ValueError, match=r"log method only supports positive values."):
         a_incompatible = [1, -2, 3]
-        Array(a_incompatible).log()
+        Array.log(a_incompatible)
     with pytest.raises(ValueError, match=r"log method only supports positive values."):
-        a_incompatible = [[1, 2, -3], [4, 5, 6]]
-        Array(a_incompatible).log()
+        a2D_incompatible = [[1, 2, -3], [4, 5, 6]]
+        Array.log(a2D_incompatible)
 
 def test_abs_array():
     a_2D = [[1, -2, 3], [4, 5, -6]]
     a_1D = [1, -0.5, -1.5]
 
-    output1 = Array(a_1D).abs()
+    output1 = Array.abs(a_1D)
     expected_output1 = np.abs(a_1D)
     assert output1.tolist() == expected_output1.tolist()
 
-    output2 = Array(a_2D).abs()
+    output2 = Array.abs(a_2D)
     expected_output2 = np.abs(a_2D)
+    assert output2.tolist() == expected_output2.tolist()
+
+def test_exp_array():
+    a_2D = [[1, -2, 3], [4, 5, -6]]
+    a_1D = [1, -0.5, -1.5]
+
+    output1 = Array.exp(a_1D)
+    expected_output1 = np.exp(a_1D)
+    assert output1.tolist() == expected_output1.tolist()
+
+    output2 = Array.exp(a_2D)
+    expected_output2 = np.exp(a_2D)
     assert output2.tolist() == expected_output2.tolist()
 
