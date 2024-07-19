@@ -1,41 +1,5 @@
-from .analysis import calculate_mean
+
 from .array import Array
-
-
-class MeanSquaredError:
-    """
-    Class to calculate the Mean Squared Error (MSE) between true values and predicted values.
-
-    The class can be used as a callable to compute the MSE. The MSE is a measure of the average squared
-    difference between the estimated values and the actual value.
-
-    Methods:
-        __call__(y_true: Array, y_predict: Array) -> float:
-            Calculates and returns the MSE between the true and predicted values.
-    """
-
-    def __call__(self, y_true: Array, y_predict: Array) -> float:
-        """
-        Calculate the Mean Squared Error (MSE) between the true values and predicted values.
-
-        Args:
-            y_true (Array): Array of true values.
-            y_predict (Array): Array of predicted values.
-
-        Returns:
-            float: The Mean Squared Error (MSE) between the true and predicted values.
-
-        Example:
-            >>> y_true = Array([3, -0.5, 2, 7])
-            >>> y_predict = Array([2.5, 0.0, 2, 8])
-            >>> mse = MeanSquaredError()
-            >>> mse(y_true, y_predict)
-            0.375
-        """
-        squared_error = (y_true - y_predict) ** 2
-        mse = calculate_mean(squared_error)
-        return mse
-
 
 class BinaryCrossEntropy:
     """
