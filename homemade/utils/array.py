@@ -61,6 +61,9 @@ class Array:
             int, float, or list: The element at the specified index.
         """
         return self.data[index]
+    
+    def __setitem__(self, index, value):
+        self.data[index] = value
 
     @classmethod
     def from_list(cls, data_list):
