@@ -6,7 +6,6 @@ Classes:
     LinearRegression: Implements a linear regression model with methods for training and prediction.
 """
 
-import random
 from ..utils.analysis import calculate_mean
 from ..utils.array import Array
 from ..utils.normalize import normalize
@@ -45,9 +44,9 @@ class LinearRegression:
 
         # Initialize model parameters
         num_features = self.data.shape[1]
-        self.slope = Array([random.uniform(-1, 1)] * num_features)
-        self.intercept = random.uniform(-1, 1)
-        
+        self.slope = Array([0] * num_features)
+        self.intercept = 0
+
     def train(self, learning_rate, iterations, stopping_threshold=1e-6):
         """
         Trains the linear regression model using gradient descent.
@@ -60,7 +59,7 @@ class LinearRegression:
         Returns:
             Tuple[Array, float]: The final slope and intercept of the trained model.
         """
-        previous_cost = float('inf')
+        previous_cost = float("inf")
         iteration = 0
         while iteration < iterations:
             predictions = self.hypothesis(self.data, self.slope, self.intercept)
@@ -69,11 +68,15 @@ class LinearRegression:
                 break
             previous_cost = current_cost
             if iteration % 1000 == 0:
-                print(f"Model parameters after {iteration} iterations: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}")
-            self.slope, self.intercept = self.gradient_descent(predictions, learning_rate)
+                print(
+                    f"Model parameters after {iteration} iterations: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
+                )
+            self.slope, self.intercept = self.gradient_descent(
+                predictions, learning_rate
+            )
             iteration += 1
         return self.slope, self.intercept
-    
+
     def gradient_descent(self, predictions, learning_rate):
         """
         Performs one step of gradient descent to update the model parameters.
@@ -90,7 +93,7 @@ class LinearRegression:
         # Calculate the gradients
         slope_derivative = (-2 / num_samples) * (self.data.transpose() @ errors)
         intercept_derivative = (-2 / num_samples) * Array.sum(errors)
-        
+
         self.slope -= learning_rate * slope_derivative
         self.intercept -= learning_rate * intercept_derivative
 
@@ -109,7 +112,7 @@ class LinearRegression:
         square_error = (self.labels - predictions) ** 2
         cost = calculate_mean(square_error)
         return cost
-    
+
     def predict(self, data, slope, intercept):
         """
         Predicts the target values for a given feature matrix using the specified slope and intercept.
