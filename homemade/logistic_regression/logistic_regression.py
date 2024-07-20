@@ -1,6 +1,5 @@
 from typing import Union
 from ..utils.array import Array
-from ..utils.activations import sigmoid
 from ..utils.normalize import normalize
 
 class LogisticRegression:
@@ -125,6 +124,9 @@ class LogisticRegression:
         total_sum = Array.sum(labels * log_predictions + (1 - labels) * log_one_minus_predictions)
         return (-1 / total_elements) * total_sum
     
+    def sigmoid(self, z):
+        return 1 / (1 + Array.exp(-z))
+    
     def predict(self, data, model_params: Union[tuple[Array, float], list[tuple[Array, float]]]) -> Array:
         """
         Predict the class labels for the given data using the trained model.
@@ -174,4 +176,4 @@ class LogisticRegression:
             Array: The predicted probabilities.
         """
         linear_combination = data @ slope + intercept
-        return sigmoid(linear_combination)
+        return LogisticRegression.sigmoid(linear_combination)
