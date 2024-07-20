@@ -386,7 +386,8 @@ class Array:
             return Array([[x ** power for x in row] for row in self.data])
         else:
             raise ValueError("__pow__ method is only implemented for 1D and 2D arrays.")
-        
+
+    @staticmethod 
     def sqrt(data):
         """
         Computes the square root of each element in the array.
@@ -444,6 +445,8 @@ class Array:
         if len(data.shape) == 1:
             return Array([math.exp(x) for x in data.data])
         else:
-            return Array([[math.exp(x) for x in row] for row in data.data])        
+            return Array([[math.exp(x) for x in row] for row in data.data])  
+
+        
 
 
