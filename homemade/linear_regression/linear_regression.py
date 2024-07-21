@@ -61,13 +61,15 @@ class LinearRegression:
         """
         previous_cost = float("inf")
         iteration = 0
+        cost_history = []
         while iteration < iterations:
             predictions = self.hypothesis(self.data, self.slope, self.intercept)
             current_cost = self.cost_function(predictions)
+            cost_history.append(current_cost)
             if abs(previous_cost - current_cost) <= stopping_threshold:
                 break
             previous_cost = current_cost
-            if iteration % 1000 == 0:
+            if iteration % 100 == 0:
                 print(
                     f"Model parameters after {iteration} iterations: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
                 )
@@ -75,7 +77,11 @@ class LinearRegression:
                 predictions, learning_rate
             )
             iteration += 1
-        return self.slope, self.intercept
+        print(f"Optimization finished after {iteration} iterations.")
+        print(
+            f"Final parameters: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
+        )
+        return self.slope, self.intercept, cost_history
 
     def gradient_descent(self, predictions, learning_rate):
         """
