@@ -53,12 +53,12 @@ class LogisticRegression:
         else:
             model_params = []
             numb_iterations = 0
+            print("Start training")
             for c in classes:
                 y_binary_i = Array([1 if y_i == c else 0 for y_i in self.labels.data])
-                self.slope, self.intercept, cost_history, current_cost, iteration = self.prepare_for_train(y_binary_i, learning_rate, iterations)
+                self.slope, self.intercept, current_cost, iteration = self.prepare_for_train(y_binary_i, learning_rate, iterations)
                 numb_iterations += iteration
                 model_params.append((self.slope, self.intercept))
-            print(f"Optimization finished after {numb_iterations} iterations.")
             print(
                 f"Final parameters: Cost: {current_cost}, model parameters: {model_params}"
             )
@@ -88,10 +88,6 @@ class LogisticRegression:
             if abs(previous_cost - current_cost) <= stopping_threshold:
                 break
             previous_cost = current_cost
-            if iteration % 1000 == 0:
-                print(
-                    f"Model parameters after {iteration} iterations: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
-                )
             self.slope, self.intercept = self.gradient_descent(labels, predictions, learning_rate)
             iteration += 1
         
