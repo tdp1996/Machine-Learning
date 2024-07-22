@@ -16,7 +16,7 @@ This repository contains implementations of Linear Regression and Logistic Regre
 ```plaintext
 Machine_Learning_Project/
 │
-├── homemade
+├── homemade/
 │   ├── data
 │   │
 │   ├── linear_regression/
@@ -31,7 +31,7 @@ Machine_Learning_Project/
 │   │    ├── metrics.py
 │   │    └── normalize.py
 │
-├── notebook
+├── notebooks/
 │   ├── linear_regression/
 │   │   ├── multivariate_linear_regression_demo.ipynb   
 │   │   └── univariate_linear_regression_demo.ipynb
