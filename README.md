@@ -27,16 +27,23 @@ Machine_Learning_Project/
 │   │   └── logistic_regression.py
 │   │
 │   ├── utils/
-│   │    ├── activations.py
 │   │    ├── analysis.py
 │   │    ├── array.py
 │   │    ├── metrics.py
-│   │    └── normalize.py        
+│   │    └── normalize.py
+│
+├── notebook
+│   ├── linear_regression/
+│   │   ├── multivariate_linear_regression_demo.ipynb   
+│   │   └── univariate_linear_regression_demo.ipynb
+│   │
+│   ├── logistic_regression/
+│   │   ├── logistic_regression_binary_demo.ipynb  
+│   │   └── logistic_regression_multiclass_demo.ipynb
 │
 ├── tests/
 │   ├── test_homemade/
 │   │   ├── test_utils/
-│   │   │   ├── test_activations.py
 │   │   │   ├── test_analysis.py
 │   │   │   ├── test_classess.py
 │   │   │   ├── test_metrics.py
