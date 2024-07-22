@@ -44,14 +44,24 @@ class LogisticRegression:
         
         classes = list(set(self.labels.data))
         if len(classes) == 2:
-            self.slope, self.intercept = self.prepare_for_train(self.labels, learning_rate, iterations)
+            self.slope, self.intercept, current_cost, iteration = self.prepare_for_train(self.labels, learning_rate, iterations)
+            print(f"Optimization finished after {iteration} iterations.")
+            print(
+                f"Final parameters: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
+            )
             return self.slope, self.intercept
         else:
             model_params = []
+            numb_iterations = 0
+            print("Start training")
             for c in classes:
                 y_binary_i = Array([1 if y_i == c else 0 for y_i in self.labels.data])
-                self.slope, self.intercept = self.prepare_for_train(y_binary_i, learning_rate, iterations)
+                self.slope, self.intercept, current_cost, iteration = self.prepare_for_train(y_binary_i, learning_rate, iterations)
+                numb_iterations += iteration
                 model_params.append((self.slope, self.intercept))
+            print(
+                f"Final parameters: Cost: {current_cost}, model parameters: {model_params}"
+            )
             return model_params    
 
     def prepare_for_train(self, labels, learning_rate, iterations, stopping_threshold=1e-6):
@@ -69,20 +79,19 @@ class LogisticRegression:
         """
         previous_cost = float('inf')
         iteration = 0
+
         while iteration < iterations:
             predictions = self.hypothesis(self.data, self.slope, self.intercept)
             current_cost = self.cost_function(labels, predictions)
 
+
             if abs(previous_cost - current_cost) <= stopping_threshold:
                 break
             previous_cost = current_cost
-            if iteration % 1000 == 0:
-                print(
-                    f"Model parameters after {iteration} iterations: Cost: {current_cost}, slope: {self.slope}, intercept: {self.intercept}"
-                )
             self.slope, self.intercept = self.gradient_descent(labels, predictions, learning_rate)
             iteration += 1
-        return self.slope, self.intercept
+        
+        return self.slope, self.intercept, current_cost, iteration
 
     def gradient_descent(self, labels, predictions, learning_rate):
         """
@@ -124,7 +133,7 @@ class LogisticRegression:
         total_sum = Array.sum(labels * log_predictions + (1 - labels) * log_one_minus_predictions)
         return (-1 / total_elements) * total_sum
     
-    def sigmoid(self, z):
+    def sigmoid(z):
         return 1 / (1 + Array.exp(-z))
     
     def predict(self, data, model_params: Union[tuple[Array, float], list[tuple[Array, float]]]) -> Array:
