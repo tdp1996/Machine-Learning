@@ -1,8 +1,7 @@
 # MACHINE LEARNING
 
 
-
-This repository contains implementations of various Machine Learning algorithms and utilities. The aim of this project is to provide a clear and understandable implementation of these algorithms from scratch, focusing on the underlying principles rather than using pre-built libraries.
+This repository contains implementations of Linear Regression and Logistic Regression algorithms. The main goal is to practice Python programming and understand the fundamentals of these algorithms by building them from scratch.
 
 ## Table of Contents
 - [Project Structure](#project-structure)
@@ -74,40 +73,63 @@ from homemade.linear_regression.linear_regression import LinearRegression
 from homemade.utils.array import Array
 from homemade.utils.metrics import Metrics
 
-data = pd.read_csv('homemade/data/simple_linear_regression_data.csv')
+# Load the data.
+data = pd.read_csv("../../data/world-happiness-report-2017.csv")
 
-# Drop the missing values
-data = data.dropna()
+# Split data set on training and test sets with proportions 80/20.
+# Function sample() returns a random sample of items.
+train_data = data.sample(frac=0.8, random_state=42)
+test_data = data.drop(train_data.index)
 
-# training dataset and labels
-X_train= Array(list(data.X[0:80]))
-X_train = Array([[item] for item in X_train.data])
-y_train = Array(list(data.y[0:80]))
+# Decide what fields we want to process.
+input_param_name = "Economy..GDP.per.Capita."
+output_param_name = "Happiness.Score"
 
-# valid dataset and labels
-X_test = Array(list(data.X[80:100]))
-X_test_reshape = Array([[item] for item in X_test.data])
-y_test = Array(list(data.y[80:100]))
+# Split training set input and output.
+x_train = train_data[[input_param_name]].values
+y_train = train_data[output_param_name].values
 
-model = LinearRegression(X_train, y_train)
-# train model
-weight, bias = model.train(learning_rate= 0.001, iterations=10000)
+# Split test set input and output.
+x_test = test_data[[input_param_name]].values
+y_test = test_data[output_param_name].values
 
-# predict results and evaluate the performance of the model using R square metric
-y_predict = model.predict(X_test_reshape, weight, bias)
-r_square = Metrics.r_square(y_true=y_test, y_predict=y_predict)
+# setup data, convert to Array for training
+X_train = Array(x_train.tolist())
+Y_train = Array(y_train.tolist())
+X_test = Array(x_test.tolist())
+Y_test = Array(y_test.tolist())
 
+## Init linear regression instance.
+linear_regression = LinearRegression(X_train, Y_train)
 
+learning_rate = 0.01
+iterations = 500
+
+slope, intercept, cost_history = linear_regression.train(
+    learning_rate=learning_rate, iterations=iterations
+)
+
+# test trained model with test data
+y_predict = linear_regression.predict(X_test, slope, intercept)
+
+# evaluate the model accuracy with RMSE
+mse = Metrics.mean_absolute_error(Y_test, y_predict)
+rmse = math.sqrt(mse)
+print(f"Root Mean Squared Error: {rmse}")
+
+# prepare to plot result
+x_test = x_test.reshape(31,)
+y_predict = np.array([[item] for item in y_predict.data])
 
 # visualize results
-plt.figure(figsize=(14, 10))
-plt.scatter(X_test.data, y_test.data, color='blue', label='Actual data')
-plt.plot(X_test.data, y_predict.data, color='red', linewidth=2, label='Regression line')
-plt.xlabel('X')
-plt.ylabel('y')
-plt.title('Linear Regression')
+plt.figure(figsize=(10, 6))
+plt.scatter(x_train, y_train, label="Training Dataset")
+plt.scatter(x_test, y_test, label="Test Dataset")
+plt.plot(x_test, y_predict, color="red", linewidth=2, label="Regression line")
+plt.xlabel("Economy..GDP.per.Capita.")
+plt.ylabel("Happiness.Score")
+plt.title("Countries Happines")
 plt.legend()
-plt.grid(True)
 plt.show()
 ```
 
@@ -116,6 +138,18 @@ plt.show()
   * `linear_regression.py`
 * Logistic Regression:
   *  `logistic_regression.py`
+
+## Notebooks
+The project includes Jupyter notebooks for demonstrating the algorithms:
+
+* Linear Regression:
+  * `multivariate_linear_regression_demo.ipynb`
+  * `univariate_linear_regression_demo.ipynb`
+* Logistic Regression:
+  * `logistic_regression_binary_demo.ipynb`
+  * `logistic_regression_multiclass_demo.ipynb`
+
+These notebooks provide step-by-step examples and visualizations to help understand how the algorithms work. You can run these notebooks locally or in an online environment like Google Colab.
 
 ## Testing
 The project includes unit tests to ensure the correctness of the implementations. You can run the tests using pytest:
